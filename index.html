@@ -392,7 +392,6 @@ function openSheet(id){
     img.innerHTML = `<div class="gal" id="gal">${g.map(x => `<img src="${x.img}" alt="${p.name} ${x.c}" draggable="false">`).join("")}</div>
       <div class="gal-dots">${g.map((x,i) => `<span class="${i===start?'on':''}"></span>`).join("")}</div>`;
     const gal = img.querySelector("#gal");
-    requestAnimationFrame(() => { gal.scrollLeft = start * gal.clientWidth; });
     gal.onscroll = () => { const i = Math.round(gal.scrollLeft / gal.clientWidth); setColor(id, g[i].c, false); };
   } else {
     img.innerHTML = p.img ? `<img src="${p.img}" alt="${p.name}">${p.ill ? `<span class="ill">Imagen ilustrativa del modelo</span>` : ""}` : `<img class="mark" src="logo-blanco.png" alt="">`;
@@ -409,6 +408,8 @@ function openSheet(id){
   add.dataset.id = id;
   add.textContent = cart[id] ? `En tu pedido (${cart[id]})` : "Agregar al pedido";
   document.getElementById("sheet").showModal();
+  const gal = document.getElementById("gal");
+  if (gal) { const i = Math.max(0, p.gallery.findIndex(x => x.c === colorSel[id])); gal.scrollLeft = i * gal.clientWidth; }
 }
 document.getElementById("sheet").addEventListener("click", e => { if (e.target.id === "sheet") e.target.close(); });
 

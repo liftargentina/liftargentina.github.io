@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Lift Argentina</title>
 <meta name="description" content="Representantes oficiales de Lift en Argentina. eFoils, foils y accesorios con precios en dólares, envío e impuestos incluidos.">
-<meta name="theme-color" content="#EAF3F9">
+<meta name="theme-color" content="#0E2433">
 <link rel="icon" href="logo-azul.png">
 <meta property="og:title" content="Lift Argentina">
 <meta property="og:description" content="eFoils Lift con precio final en dólares, puestos en Argentina.">
@@ -35,25 +35,31 @@ button{font:inherit;color:inherit;cursor:pointer}
 .wrap{max-width:var(--col);margin:0 auto;padding:0 20px}
 .display{font-variation-settings:"wdth" 120;font-weight:760;letter-spacing:-.01em;line-height:1.05}
 
-/* Cielo */
-.sky{padding:36px 0 0;text-align:center}
-.sky .logo{width:min(100%,460px);height:auto;margin:0 auto}
-.sky p{max-width:30ch;margin:18px auto 0;color:var(--tinta-suave);font-size:16px}
+/* Portada con foto */
+.hero{position:relative;min-height:min(92svh,860px);display:flex;flex-direction:column;color:var(--blanco);overflow:hidden;background:var(--rio);text-align:center}
+.hero-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:70% 40%}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,rgba(14,36,51,.25) 0%,rgba(14,36,51,0) 30%,rgba(14,36,51,0) 50%,rgba(14,36,51,.7) 88%)}
+.hero-in{position:relative;z-index:1;flex:1;display:flex;flex-direction:column;width:100%;padding-top:30px;padding-bottom:8px}
+.hero .logo{width:min(100%,430px);height:auto;margin:0 auto;filter:drop-shadow(0 2px 10px rgba(14,36,51,.25))}
+.hero-foot{margin-top:auto}
+.hero p{max-width:30ch;margin:0 auto;font-size:16px;text-shadow:0 1px 8px rgba(14,36,51,.6)}
 .actions{display:flex;flex-direction:column;gap:10px;margin:26px auto 0;max-width:360px}
 .btn{display:flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:12px 20px;border-radius:999px;text-decoration:none;font-weight:650;border:0;font-size:16px}
 .btn-wa{background:var(--rio);color:var(--blanco)}
 .btn-line{background:transparent;border:1.5px solid var(--rio);color:var(--rio)}
+.hero .btn-wa{background:var(--blanco);color:var(--rio)}
+.hero .btn-line{border-color:var(--blanco);color:var(--blanco);background:rgba(14,36,51,.25)}
 .btn svg{width:20px;height:20px;flex:none}
 
 /* Horizonte */
-.horizon{display:block;width:100%;height:72px;margin-top:40px;color:var(--rio)}
+.horizon{position:relative;z-index:1;display:block;width:100%;height:56px;margin-top:28px;color:var(--rio)}
 .water{background:var(--rio);color:var(--blanco);padding:8px 0 48px}
 .water h2{font-size:30px;margin:0 0 6px}
 .water .sub{color:var(--espuma);margin:0 0 26px;font-size:15px}
 .feature{border-top:1px solid rgba(201,221,235,.25);padding:26px 0}
 .feature:last-of-type{border-bottom:1px solid rgba(201,221,235,.25)}
 .feature h3{font-size:44px;margin:0}
-.feature .desc{color:var(--espuma);margin:8px 0 18px;max-width:38ch}
+.feature .desc{color:var(--espuma);margin:8px 0 10px;max-width:38ch}
 .feature .row{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap}
 .price-big{font-size:30px;font-weight:700;font-variation-settings:"wdth" 110}
 .price-big small{display:block;font-size:13px;font-weight:450;color:var(--espuma);font-variation-settings:"wdth" 100}
@@ -73,18 +79,36 @@ button{font:inherit;color:inherit;cursor:pointer}
 .tabs button[aria-selected="true"]{background:var(--blanco);box-shadow:0 1px 2px rgba(14,36,51,.15)}
 .group h3{font-size:14px;font-weight:650;color:var(--tinta-suave);margin:26px 0 4px}
 .item{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--espuma)}
-.item .name{flex:1;min-width:0;font-weight:520}
+.item .name{flex:1;min-width:0;font-weight:520;text-align:left;background:none;border:0;padding:4px 0;text-decoration:underline;text-decoration-color:var(--espuma);text-underline-offset:4px;text-decoration-thickness:1.5px}
+.more{background:none;border:0;padding:0;color:var(--espuma);text-decoration:underline;text-underline-offset:4px;font-size:15px;margin:0 0 18px}
+/* Ficha de producto */
+dialog.sheet{border:0;padding:0;margin:auto auto 0;width:100%;max-width:var(--col);max-height:92svh;border-radius:22px 22px 0 0;background:var(--cielo);color:var(--rio);overflow:auto}
+dialog.sheet::backdrop{background:rgba(14,36,51,.55)}
+@media (min-width:700px){dialog.sheet{margin:auto;border-radius:22px}}
+.sheet-img{position:relative;aspect-ratio:4/3;background:linear-gradient(160deg,var(--agua),var(--rio));display:grid;place-items:center;overflow:hidden}
+.sheet-img img{width:100%;height:100%;object-fit:cover}
+.sheet-img img.mark{width:55%;height:auto;object-fit:contain;opacity:.9}
+.sheet-close{position:absolute;top:12px;right:12px;width:40px;height:40px;border-radius:50%;border:0;background:rgba(255,255,255,.92);color:var(--rio);font-size:22px;line-height:1;z-index:2}
+.sheet-body{padding:22px 22px 26px}
+.sheet-body .grp{font-size:14px;color:var(--tinta-suave);margin:0 0 4px}
+.sheet-body h3{font-size:34px;margin:0 0 10px}
+.sheet-body .d{margin:0 0 16px}
+.specs{margin:0 0 18px;padding:0;border-top:1px solid var(--espuma)}
+.specs div{display:flex;justify-content:space-between;gap:16px;padding:10px 0;border-bottom:1px solid var(--espuma);font-size:15px}
+.specs dt{color:var(--tinta-suave)}
+.specs dd{margin:0;text-align:right;font-weight:550}
+.sheet-price{font-size:28px;font-weight:700;font-variation-settings:"wdth" 110;margin:0}
+.sheet-price small{display:block;font-size:14px;font-weight:450;color:var(--tinta-suave);font-variation-settings:"wdth" 100;margin-bottom:14px}
+.sheet .btn-add{width:100%}
 .item .price{font-weight:650;white-space:nowrap}
 .step{display:flex;align-items:center;border:1.5px solid var(--rio);border-radius:999px;height:38px;flex:none}
 .step button{width:36px;height:100%;border:0;background:transparent;font-size:20px;line-height:1}
 .step output{min-width:18px;text-align:center;font-weight:650}
 .add-sm{flex:none;height:38px;padding:0 14px;border-radius:999px;border:1.5px solid var(--rio);background:transparent;font-weight:600;font-size:14px}
 
-/* Escuela y pasos */
-.school{padding:40px 0;border-top:1px solid var(--espuma)}
-.school h2,.how h2{font-size:26px;margin:0 0 8px}
-.school p{margin:0 0 18px;color:var(--tinta-suave)}
-.how{padding:8px 0 40px}
+/* Pasos */
+.how h2{font-size:26px;margin:0 0 8px}
+.how{padding:40px 0;border-top:1px solid var(--espuma)}
 .how ol{list-style:none;padding:0;margin:16px 0 0;counter-reset:s}
 .how li{counter-increment:s;display:grid;grid-template-columns:40px 1fr;gap:12px;padding:12px 0}
 .how li::before{content:counter(s);width:32px;height:32px;border-radius:50%;background:var(--rio);color:var(--blanco);display:grid;place-items:center;font-weight:700;font-size:15px}
@@ -126,20 +150,23 @@ footer p{margin:0 0 8px}
 </head>
 <body>
 
-<header class="sky">
-  <div class="wrap">
-    <img class="logo" src="logo-azul.png" alt="Lift Argentina" width="1600" height="822">
-    <p>Representantes oficiales de Lift en Argentina. Precios en dólares con envío e impuestos incluidos.</p>
-    <div class="actions">
+<header class="hero">
+  <img class="hero-bg" src="hero.jpg" alt="Rider volando con un eFoil Lift en un lago de montaña" width="1200" height="1600" fetchpriority="high">
+  <div class="hero-in wrap">
+    <img class="logo" src="logo-blanco.png" alt="Lift Argentina" width="1600" height="822">
+    <div class="hero-foot">
+      <p>Representantes oficiales de Lift en Argentina. Precios en dólares con envío e impuestos incluidos.</p>
+      <div class="actions">
       <a class="btn btn-wa" href="https://wa.me/5493815080432?text=Hola%20Lift%20Argentina%2C%20quiero%20hacer%20una%20consulta." target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2l-.4-.2Z"/></svg>
         Escribinos por WhatsApp
       </a>
       <a class="btn btn-line" href="#precios">Ver lista de precios</a>
+      </div>
     </div>
   </div>
-  <svg class="horizon" viewBox="0 0 1440 72" preserveAspectRatio="none" aria-hidden="true">
-    <path fill="currentColor" d="M0 40 C 180 10, 360 10, 540 34 S 900 64, 1080 38 S 1350 14, 1440 30 L1440 72 L0 72 Z"/>
+  <svg class="horizon" viewBox="0 0 1440 56" preserveAspectRatio="none" aria-hidden="true">
+    <path fill="currentColor" d="M0 30 C 180 6, 360 6, 540 26 S 900 50, 1080 28 S 1350 10, 1440 22 L1440 56 L0 56 Z"/>
   </svg>
 </header>
 
@@ -151,7 +178,8 @@ footer p{margin:0 0 8px}
 
     <article class="feature">
       <h3 class="display">LIFT5</h3>
-      <p class="desc">El insignia de Lift: tabla de carbono y batería de 2,2 kWh para sesiones largas.</p>
+      <p class="desc">El modelo insignia de Lift, con tabla de carbono.</p>
+      <button class="more" data-info="p0">Ver detalles</button>
       <div class="row">
         <div class="price-big">USD 16.999<small>Seña de USD 8.500</small></div>
         <button class="btn btn-add" data-add="p0" aria-pressed="false">Agregar al pedido</button>
@@ -162,6 +190,7 @@ footer p{margin:0 0 8px}
     <article class="feature">
       <h3 class="display">LIFTX</h3>
       <p class="desc">El más liviano de la línea, con batería de 1,0 kWh. Fácil de llevar y de armar.</p>
+      <button class="more" data-info="p6">Ver detalles</button>
       <div class="row">
         <div class="price-big">USD 15.999<small>Seña de USD 8.000</small></div>
         <button class="btn btn-add" data-add="p6" aria-pressed="false">Agregar al pedido</button>
@@ -189,14 +218,6 @@ footer p{margin:0 0 8px}
   </div>
 </section>
 
-<section class="school" aria-labelledby="escuela-title">
-  <div class="wrap">
-    <h2 id="escuela-title" class="display">Probalo antes de comprar</h2>
-    <p>Coordinamos pruebas en Windtoys, la escuela de deportes acuáticos con la que trabajamos. Escribinos y armamos el día.</p>
-    <a class="btn btn-line" href="https://www.instagram.com/windtoys_/" target="_blank" rel="noopener">Ver Windtoys en Instagram</a>
-  </div>
-</section>
-
 <section class="how" aria-labelledby="como-title">
   <div class="wrap">
     <h2 id="como-title" class="display">Cómo comprar</h2>
@@ -217,6 +238,19 @@ footer p{margin:0 0 8px}
   </div>
 </footer>
 
+<dialog class="sheet" id="sheet" aria-labelledby="sheetTitle">
+  <div class="sheet-img" id="sheetImg"></div>
+  <button class="sheet-close" id="sheetClose" aria-label="Cerrar">×</button>
+  <div class="sheet-body">
+    <p class="grp" id="sheetGrp"></p>
+    <h3 class="display" id="sheetTitle"></h3>
+    <p class="d" id="sheetDesc"></p>
+    <dl class="specs" id="sheetSpecs"></dl>
+    <p class="sheet-price" id="sheetPrice"></p>
+    <button class="btn btn-add" id="sheetAdd">Agregar al pedido</button>
+  </div>
+</dialog>
+
 <div class="cart" id="cart" hidden>
   <div class="cart-bar">
     <button class="cart-top" id="cartToggle" aria-expanded="false" aria-controls="cartDetail">
@@ -233,7 +267,7 @@ footer p{margin:0 0 8px}
 <script>
 const WA = "5493815080432";
 const MIN = 2000;
-const PRODUCTS = [{"id": "p0", "cat": "efoil", "group": "eFoils", "name": "LIFT5", "price": 16999}, {"id": "p1", "cat": "efoil", "group": "eFoils", "name": "LIFT5 Full Range", "price": 17599}, {"id": "p2", "cat": "efoil", "group": "eFoils", "name": "LIFT5 F", "price": 12999}, {"id": "p3", "cat": "efoil", "group": "eFoils", "name": "LIFT5 F Full Range", "price": 13468}, {"id": "p4", "cat": "efoil", "group": "eFoils", "name": "Laird LIFT5", "price": 17499}, {"id": "p5", "cat": "efoil", "group": "eFoils", "name": "Laird LIFT5 Full Range", "price": 17968}, {"id": "p6", "cat": "efoil", "group": "eFoils", "name": "LIFTX", "price": 15999}, {"id": "p7", "cat": "efoil", "group": "eFoils", "name": "Florence LIFTX", "price": 16999}, {"id": "p8", "cat": "acc", "group": "Baterías y carga", "name": "Batería Gen5 Full Range (repuesto)", "price": 4816}, {"id": "p9", "cat": "acc", "group": "Baterías y carga", "name": "Batería Gen5 Light", "price": 3926}, {"id": "p10", "cat": "acc", "group": "Baterías y carga", "name": "Batería LIFTX (repuesto)", "price": 4036}, {"id": "p11", "cat": "acc", "group": "Baterías y carga", "name": "Batería LIFTX Light (repuesto)", "price": 3379}, {"id": "p12", "cat": "acc", "group": "Baterías y carga", "name": "Adaptador de batería LIFTX", "price": 365}, {"id": "p13", "cat": "acc", "group": "Baterías y carga", "name": "Mochila para batería LIFT5", "price": 162}, {"id": "p14", "cat": "acc", "group": "Baterías y carga", "name": "Mochila para batería LIFTX", "price": 162}, {"id": "p15", "cat": "acc", "group": "Baterías y carga", "name": "Cargador Lift", "price": 1339}, {"id": "p16", "cat": "acc", "group": "Baterías y carga", "name": "Cargador rápido Gen5 / LIFTX", "price": 1573}, {"id": "p17", "cat": "acc", "group": "Accesorios", "name": "Control de mano Lift 2", "price": 895}, {"id": "p18", "cat": "acc", "group": "Accesorios", "name": "Blowfish 4’4 (tabla inflable)", "price": 1040}, {"id": "p19", "cat": "acc", "group": "Accesorios", "name": "Blowfish 4’9 (tabla inflable)", "price": 1040}, {"id": "p20", "cat": "acc", "group": "Accesorios", "name": "Blowfish 5’4 (tabla inflable)", "price": 1084}, {"id": "p21", "cat": "acc", "group": "Accesorios", "name": "Bolso estanco 6 L", "price": 78}, {"id": "p22", "cat": "acc", "group": "Accesorios", "name": "LCS Jet Kit", "price": 939}, {"id": "p23", "cat": "acc", "group": "Accesorios", "name": "Kit de tornillería LIFT5 / LIFTX", "price": 68}, {"id": "p24", "cat": "acc", "group": "Accesorios", "name": "eBox para LIFT5 y LIFTX", "price": 1151}, {"id": "p25", "cat": "acc", "group": "Accesorios", "name": "Ruedas de playa LIFT5", "price": 435}, {"id": "p26", "cat": "acc", "group": "Accesorios", "name": "Ruedas de playa para funda LIFT5 F 4’9", "price": 435}, {"id": "p27", "cat": "acc", "group": "Accesorios", "name": "Ruedas de playa para funda LIFT5 F 5’4", "price": 435}, {"id": "p28", "cat": "foil", "group": "Mástiles ProLine", "name": "28\" M8 Mast ProLine", "price": 1652}, {"id": "p29", "cat": "foil", "group": "Mástiles ProLine", "name": "30\" M8 Mast ProLine", "price": 1752}, {"id": "p30", "cat": "foil", "group": "Mástiles ProLine", "name": "32\" M8 Mast ProLine", "price": 1702}, {"id": "p31", "cat": "foil", "group": "Mástiles ProLine", "name": "36\" M8 Mast ProLine", "price": 1752}, {"id": "p32", "cat": "foil", "group": "Mástiles ProLine", "name": "Florence F9 Race 30 Mast", "price": 3358}, {"id": "p33", "cat": "foil", "group": "Alas delanteras Core Line", "name": "90 Havoc V2", "price": 1080}, {"id": "p34", "cat": "foil", "group": "Alas delanteras Core Line", "name": "120 Havoc V2", "price": 1100}, {"id": "p35", "cat": "foil", "group": "Alas delanteras Core Line", "name": "150 Havoc V2", "price": 1150}, {"id": "p36", "cat": "foil", "group": "Alas delanteras Core Line", "name": "200 Havoc V2", "price": 1200}, {"id": "p37", "cat": "foil", "group": "Alas delanteras Core Line", "name": "90 Vario", "price": 1080}, {"id": "p38", "cat": "foil", "group": "Alas delanteras Core Line", "name": "120 Vario", "price": 1100}, {"id": "p39", "cat": "foil", "group": "Alas delanteras Core Line", "name": "150 Vario", "price": 1150}, {"id": "p40", "cat": "foil", "group": "Alas delanteras Core Line", "name": "180 Vario", "price": 1200}, {"id": "p41", "cat": "foil", "group": "Alas delanteras Core Line", "name": "155 STOL", "price": 1200}, {"id": "p42", "cat": "foil", "group": "Alas delanteras Core Line", "name": "185 STOL", "price": 1250}, {"id": "p43", "cat": "foil", "group": "Alas delanteras Core Line", "name": "76 eRace", "price": 1400}, {"id": "p44", "cat": "foil", "group": "Alas LCS", "name": "120 Havoc V2 LCS", "price": 1468}, {"id": "p45", "cat": "foil", "group": "Alas LCS", "name": "Florence 137 LCS", "price": 1618}, {"id": "p46", "cat": "foil", "group": "Alas LCS", "name": "150 Havoc V2 LCS", "price": 1518}, {"id": "p47", "cat": "foil", "group": "Alas LCS", "name": "200 Havoc LCS", "price": 1568}, {"id": "p48", "cat": "foil", "group": "Alas LCS", "name": "120 Vario LCS", "price": 1468}, {"id": "p49", "cat": "foil", "group": "Alas LCS", "name": "150 Vario LCS", "price": 1518}, {"id": "p50", "cat": "foil", "group": "Alas LCS", "name": "210 Camber Pro LCS", "price": 1518}, {"id": "p51", "cat": "foil", "group": "Alas LCS", "name": "270 Camber Pro LCS", "price": 1618}, {"id": "p52", "cat": "foil", "group": "Alas traseras Core Line", "name": "20 Flow", "price": 382}, {"id": "p53", "cat": "foil", "group": "Alas traseras Core Line", "name": "25 Flow", "price": 392}, {"id": "p54", "cat": "foil", "group": "Alas traseras Core Line", "name": "30 Flow", "price": 402}, {"id": "p55", "cat": "foil", "group": "Alas traseras Core Line", "name": "21 Carve V2", "price": 382}, {"id": "p56", "cat": "foil", "group": "Alas traseras Core Line", "name": "26 Carve V2", "price": 392}, {"id": "p57", "cat": "foil", "group": "Alas traseras Core Line", "name": "20 eRace", "price": 448}, {"id": "p58", "cat": "foil", "group": "Alas delanteras ProLine", "name": "90 Havoc V2 ProLine", "price": 1450}, {"id": "p59", "cat": "foil", "group": "Alas delanteras ProLine", "name": "120 Havoc V2 ProLine", "price": 1500}, {"id": "p60", "cat": "foil", "group": "Alas delanteras ProLine", "name": "90 Vario ProLine", "price": 1450}, {"id": "p61", "cat": "foil", "group": "Alas delanteras ProLine", "name": "120 Vario ProLine", "price": 1500}, {"id": "p62", "cat": "foil", "group": "Alas delanteras ProLine", "name": "120 STOL ProLine", "price": 1500}, {"id": "p63", "cat": "foil", "group": "Alas delanteras ProLine", "name": "Grubb 150 ProLine", "price": 1300}, {"id": "p64", "cat": "foil", "group": "Alas traseras ProLine", "name": "16 Flow ProLine", "price": 418}, {"id": "p65", "cat": "foil", "group": "Alas traseras ProLine", "name": "19 Flow ProLine", "price": 428}, {"id": "p66", "cat": "foil", "group": "Alas traseras ProLine", "name": "24 Flow ProLine", "price": 438}, {"id": "p67", "cat": "foil", "group": "Alas traseras ProLine", "name": "Grubb 16 ProLine", "price": 418}, {"id": "p68", "cat": "foil", "group": "Alas traseras ProLine", "name": "20 Carve ProLine", "price": 428}, {"id": "p69", "cat": "foil", "group": "Alas traseras ProLine", "name": "25 Carve ProLine", "price": 438}, {"id": "p70", "cat": "foil", "group": "Downwind / Florence", "name": "F86 Florence", "price": 1550}, {"id": "p71", "cat": "foil", "group": "Downwind / Florence", "name": "F100 Florence", "price": 1600}, {"id": "p72", "cat": "foil", "group": "Downwind / Florence", "name": "F20 Florence", "price": 448}, {"id": "p73", "cat": "foil", "group": "Downwind / Florence", "name": "F17 Florence", "price": 448}, {"id": "p74", "cat": "foil", "group": "Downwind / Florence", "name": "F14 Florence", "price": 448}];
+const PRODUCTS = [{"id": "p0", "cat": "efoil", "group": "eFoils", "name": "LIFT5", "price": 16999, "desc": "El modelo insignia de Lift, con tabla de carbono.", "specs": [["Tabla", "Carbono"], ["Tamaños", "4’4, 4’9 y 5’4"], ["Colores", "Off-White, Steel Blue, Sun Kissed, Fathom Green"]]}, {"id": "p1", "cat": "efoil", "group": "eFoils", "name": "LIFT5 Full Range", "price": 17599, "desc": "El LIFT5 con la batería de mayor autonomía, para sesiones más largas.", "specs": [["Tabla", "Carbono"], ["Batería", "Batería Gen5 Full Range (2,2 kWh)"], ["Tamaños", "4’4, 4’9 y 5’4"]]}, {"id": "p2", "cat": "efoil", "group": "eFoils", "name": "LIFT5 F", "price": 12999, "desc": "El modelo de entrada de Lift: estable y fácil para aprender.", "specs": [["Tamaños", "4’9 (67 L) y 5’4 (83 L)"], ["Mástil", "Aluminio de 28”"], ["Peso del equipo", "31 a 32 kg aprox."], ["Colores", "Tide Pool Blue, Matcha Green"]]}, {"id": "p3", "cat": "efoil", "group": "eFoils", "name": "LIFT5 F Full Range", "price": 13468, "desc": "El LIFT5 F con la batería de mayor autonomía.", "specs": [["Tamaños", "4’9 (67 L) y 5’4 (83 L)"], ["Mástil", "Aluminio de 28”"], ["Batería", "Batería Gen5 Full Range (2,2 kWh)"]]}, {"id": "p4", "cat": "efoil", "group": "eFoils", "name": "Laird LIFT5", "price": 17499, "desc": "Edición especial del LIFT5 firmada por Laird Hamilton.", "specs": [["Tamaño", "5’2"], ["Color", "Blue Java"], ["Peso del equipo", "28,6 kg aprox."]]}, {"id": "p5", "cat": "efoil", "group": "eFoils", "name": "Laird LIFT5 Full Range", "price": 17968, "desc": "La edición Laird con la batería de mayor autonomía.", "specs": [["Tamaño", "5’2"], ["Color", "Blue Java"], ["Batería", "Batería Gen5 Full Range (2,2 kWh)"]]}, {"id": "p6", "cat": "efoil", "group": "eFoils", "name": "LIFTX", "price": 15999, "desc": "El más liviano de la línea, con batería de 1,0 kWh. Fácil de llevar y de armar.", "specs": [["Batería", "1,0 kWh"], ["Tamaños", "Desde 4’3 hasta 5’4"], ["Colores", "Off-White, Dawn Patrol, Spark Blue"]]}, {"id": "p7", "cat": "efoil", "group": "eFoils", "name": "Florence LIFTX", "price": 16999, "desc": "Edición especial del LIFTX desarrollada con los hermanos Florence.", "specs": [["Tamaño", "4’7"], ["Colores", "Florence Red, Off-White"], ["Peso", "Tabla 7,3 kg y batería 7,6 kg"]]}, {"id": "p8", "cat": "acc", "group": "Baterías y carga", "name": "Batería Gen5 Full Range (repuesto)", "price": 4816, "desc": "Batería, cargador o accesorio de carga original Lift.", "specs": []}, {"id": "p9", "cat": "acc", "group": "Baterías y carga", "name": "Batería Gen5 Light", "price": 3926, "desc": "Batería, cargador o accesorio de carga original Lift.", "specs": []}, {"id": "p10", "cat": "acc", "group": "Baterías y carga", "name": "Batería LIFTX (repuesto)", "price": 4036, "desc": "Batería, cargador o accesorio de carga original Lift.", "specs": []}, {"id": "p11", "cat": "acc", "group": "Baterías y carga", "name": "Batería LIFTX Light (repuesto)", "price": 3379, "desc": "Batería, cargador o accesorio de carga original Lift.", "specs": []}, {"id": "p12", "cat": "acc", "group": "Baterías y carga", "name": "Adaptador de batería LIFTX", "price": 365, "desc": "Batería, cargador o accesorio de carga original Lift.", "specs": []}, {"id": "p13", "cat": "acc", "group": "Baterías y carga", "name": "Mochila para batería LIFT5", "price": 162, "desc": "Batería, cargador o accesorio de carga original Lift.", "specs": []}, {"id": "p14", "cat": "acc", "group": "Baterías y carga", "name": "Mochila para batería LIFTX", "price": 162, "desc": "Batería, cargador o accesorio de carga original Lift.", "specs": []}, {"id": "p15", "cat": "acc", "group": "Baterías y carga", "name": "Cargador Lift", "price": 1339, "desc": "Batería, cargador o accesorio de carga original Lift.", "specs": []}, {"id": "p16", "cat": "acc", "group": "Baterías y carga", "name": "Cargador rápido Gen5 / LIFTX", "price": 1573, "desc": "Batería, cargador o accesorio de carga original Lift.", "specs": []}, {"id": "p17", "cat": "acc", "group": "Accesorios", "name": "Control de mano Lift 2", "price": 895, "desc": "Accesorio original Lift.", "specs": []}, {"id": "p18", "cat": "acc", "group": "Accesorios", "name": "Blowfish 4’4 (tabla inflable)", "price": 1040, "desc": "Tabla inflable de Lift para aprender a usar el eFoil.", "specs": []}, {"id": "p19", "cat": "acc", "group": "Accesorios", "name": "Blowfish 4’9 (tabla inflable)", "price": 1040, "desc": "Tabla inflable de Lift para aprender a usar el eFoil.", "specs": []}, {"id": "p20", "cat": "acc", "group": "Accesorios", "name": "Blowfish 5’4 (tabla inflable)", "price": 1084, "desc": "Tabla inflable de Lift para aprender a usar el eFoil.", "specs": []}, {"id": "p21", "cat": "acc", "group": "Accesorios", "name": "Bolso estanco 6 L", "price": 78, "desc": "Accesorio original Lift.", "specs": []}, {"id": "p22", "cat": "acc", "group": "Accesorios", "name": "LCS Jet Kit", "price": 939, "desc": "Accesorio original Lift.", "specs": []}, {"id": "p23", "cat": "acc", "group": "Accesorios", "name": "Kit de tornillería LIFT5 / LIFTX", "price": 68, "desc": "Accesorio original Lift.", "specs": []}, {"id": "p24", "cat": "acc", "group": "Accesorios", "name": "eBox para LIFT5 y LIFTX", "price": 1151, "desc": "Accesorio original Lift.", "specs": []}, {"id": "p25", "cat": "acc", "group": "Accesorios", "name": "Ruedas de playa LIFT5", "price": 435, "desc": "Accesorio original Lift.", "specs": []}, {"id": "p26", "cat": "acc", "group": "Accesorios", "name": "Ruedas de playa para funda LIFT5 F 4’9", "price": 435, "desc": "Accesorio original Lift.", "specs": []}, {"id": "p27", "cat": "acc", "group": "Accesorios", "name": "Ruedas de playa para funda LIFT5 F 5’4", "price": 435, "desc": "Accesorio original Lift.", "specs": []}, {"id": "p28", "cat": "foil", "group": "Mástiles ProLine", "name": "28\" M8 Mast ProLine", "price": 1652, "desc": "Mástil de la línea ProLine. El número indica el largo en pulgadas.", "specs": []}, {"id": "p29", "cat": "foil", "group": "Mástiles ProLine", "name": "30\" M8 Mast ProLine", "price": 1752, "desc": "Mástil de la línea ProLine. El número indica el largo en pulgadas.", "specs": []}, {"id": "p30", "cat": "foil", "group": "Mástiles ProLine", "name": "32\" M8 Mast ProLine", "price": 1702, "desc": "Mástil de la línea ProLine. El número indica el largo en pulgadas.", "specs": []}, {"id": "p31", "cat": "foil", "group": "Mástiles ProLine", "name": "36\" M8 Mast ProLine", "price": 1752, "desc": "Mástil de la línea ProLine. El número indica el largo en pulgadas.", "specs": []}, {"id": "p32", "cat": "foil", "group": "Mástiles ProLine", "name": "Florence F9 Race 30 Mast", "price": 3358, "desc": "Mástil de la línea ProLine. El número indica el largo en pulgadas.", "specs": []}, {"id": "p33", "cat": "foil", "group": "Alas delanteras Core Line", "name": "90 Havoc V2", "price": 1080, "desc": "Ala delantera de la línea Core. A mayor número, ala más grande: más sustentación y estabilidad; las más chicas ganan velocidad y maniobrabilidad.", "specs": []}, {"id": "p34", "cat": "foil", "group": "Alas delanteras Core Line", "name": "120 Havoc V2", "price": 1100, "desc": "Ala delantera de la línea Core. A mayor número, ala más grande: más sustentación y estabilidad; las más chicas ganan velocidad y maniobrabilidad.", "specs": []}, {"id": "p35", "cat": "foil", "group": "Alas delanteras Core Line", "name": "150 Havoc V2", "price": 1150, "desc": "Ala delantera de la línea Core. A mayor número, ala más grande: más sustentación y estabilidad; las más chicas ganan velocidad y maniobrabilidad.", "specs": []}, {"id": "p36", "cat": "foil", "group": "Alas delanteras Core Line", "name": "200 Havoc V2", "price": 1200, "desc": "Ala delantera de la línea Core. A mayor número, ala más grande: más sustentación y estabilidad; las más chicas ganan velocidad y maniobrabilidad.", "specs": []}, {"id": "p37", "cat": "foil", "group": "Alas delanteras Core Line", "name": "90 Vario", "price": 1080, "desc": "Ala delantera de la línea Core. A mayor número, ala más grande: más sustentación y estabilidad; las más chicas ganan velocidad y maniobrabilidad.", "specs": []}, {"id": "p38", "cat": "foil", "group": "Alas delanteras Core Line", "name": "120 Vario", "price": 1100, "desc": "Ala delantera de la línea Core. A mayor número, ala más grande: más sustentación y estabilidad; las más chicas ganan velocidad y maniobrabilidad.", "specs": []}, {"id": "p39", "cat": "foil", "group": "Alas delanteras Core Line", "name": "150 Vario", "price": 1150, "desc": "Ala delantera de la línea Core. A mayor número, ala más grande: más sustentación y estabilidad; las más chicas ganan velocidad y maniobrabilidad.", "specs": []}, {"id": "p40", "cat": "foil", "group": "Alas delanteras Core Line", "name": "180 Vario", "price": 1200, "desc": "Ala delantera de la línea Core. A mayor número, ala más grande: más sustentación y estabilidad; las más chicas ganan velocidad y maniobrabilidad.", "specs": []}, {"id": "p41", "cat": "foil", "group": "Alas delanteras Core Line", "name": "155 STOL", "price": 1200, "desc": "Ala delantera de la línea Core. A mayor número, ala más grande: más sustentación y estabilidad; las más chicas ganan velocidad y maniobrabilidad.", "specs": []}, {"id": "p42", "cat": "foil", "group": "Alas delanteras Core Line", "name": "185 STOL", "price": 1250, "desc": "Ala delantera de la línea Core. A mayor número, ala más grande: más sustentación y estabilidad; las más chicas ganan velocidad y maniobrabilidad.", "specs": []}, {"id": "p43", "cat": "foil", "group": "Alas delanteras Core Line", "name": "76 eRace", "price": 1400, "desc": "Ala delantera de la línea Core. A mayor número, ala más grande: más sustentación y estabilidad; las más chicas ganan velocidad y maniobrabilidad.", "specs": []}, {"id": "p44", "cat": "foil", "group": "Alas LCS", "name": "120 Havoc V2 LCS", "price": 1468, "desc": "Ala delantera para el sistema LCS de los eFoils Lift.", "specs": []}, {"id": "p45", "cat": "foil", "group": "Alas LCS", "name": "Florence 137 LCS", "price": 1618, "desc": "Ala delantera para el sistema LCS de los eFoils Lift.", "specs": []}, {"id": "p46", "cat": "foil", "group": "Alas LCS", "name": "150 Havoc V2 LCS", "price": 1518, "desc": "Ala delantera para el sistema LCS de los eFoils Lift.", "specs": []}, {"id": "p47", "cat": "foil", "group": "Alas LCS", "name": "200 Havoc LCS", "price": 1568, "desc": "Ala delantera para el sistema LCS de los eFoils Lift.", "specs": []}, {"id": "p48", "cat": "foil", "group": "Alas LCS", "name": "120 Vario LCS", "price": 1468, "desc": "Ala delantera para el sistema LCS de los eFoils Lift.", "specs": []}, {"id": "p49", "cat": "foil", "group": "Alas LCS", "name": "150 Vario LCS", "price": 1518, "desc": "Ala delantera para el sistema LCS de los eFoils Lift.", "specs": []}, {"id": "p50", "cat": "foil", "group": "Alas LCS", "name": "210 Camber Pro LCS", "price": 1518, "desc": "Ala delantera para el sistema LCS de los eFoils Lift.", "specs": []}, {"id": "p51", "cat": "foil", "group": "Alas LCS", "name": "270 Camber Pro LCS", "price": 1618, "desc": "Ala delantera para el sistema LCS de los eFoils Lift.", "specs": []}, {"id": "p52", "cat": "foil", "group": "Alas traseras Core Line", "name": "20 Flow", "price": 382, "desc": "Ala trasera (estabilizador) de la línea Core.", "specs": []}, {"id": "p53", "cat": "foil", "group": "Alas traseras Core Line", "name": "25 Flow", "price": 392, "desc": "Ala trasera (estabilizador) de la línea Core.", "specs": []}, {"id": "p54", "cat": "foil", "group": "Alas traseras Core Line", "name": "30 Flow", "price": 402, "desc": "Ala trasera (estabilizador) de la línea Core.", "specs": []}, {"id": "p55", "cat": "foil", "group": "Alas traseras Core Line", "name": "21 Carve V2", "price": 382, "desc": "Ala trasera (estabilizador) de la línea Core.", "specs": []}, {"id": "p56", "cat": "foil", "group": "Alas traseras Core Line", "name": "26 Carve V2", "price": 392, "desc": "Ala trasera (estabilizador) de la línea Core.", "specs": []}, {"id": "p57", "cat": "foil", "group": "Alas traseras Core Line", "name": "20 eRace", "price": 448, "desc": "Ala trasera (estabilizador) de la línea Core.", "specs": []}, {"id": "p58", "cat": "foil", "group": "Alas delanteras ProLine", "name": "90 Havoc V2 ProLine", "price": 1450, "desc": "Ala delantera de la línea ProLine, de alto rendimiento. A mayor número, ala más grande y más estable.", "specs": []}, {"id": "p59", "cat": "foil", "group": "Alas delanteras ProLine", "name": "120 Havoc V2 ProLine", "price": 1500, "desc": "Ala delantera de la línea ProLine, de alto rendimiento. A mayor número, ala más grande y más estable.", "specs": []}, {"id": "p60", "cat": "foil", "group": "Alas delanteras ProLine", "name": "90 Vario ProLine", "price": 1450, "desc": "Ala delantera de la línea ProLine, de alto rendimiento. A mayor número, ala más grande y más estable.", "specs": []}, {"id": "p61", "cat": "foil", "group": "Alas delanteras ProLine", "name": "120 Vario ProLine", "price": 1500, "desc": "Ala delantera de la línea ProLine, de alto rendimiento. A mayor número, ala más grande y más estable.", "specs": []}, {"id": "p62", "cat": "foil", "group": "Alas delanteras ProLine", "name": "120 STOL ProLine", "price": 1500, "desc": "Ala delantera de la línea ProLine, de alto rendimiento. A mayor número, ala más grande y más estable.", "specs": []}, {"id": "p63", "cat": "foil", "group": "Alas delanteras ProLine", "name": "Grubb 150 ProLine", "price": 1300, "desc": "Ala delantera de la línea ProLine, de alto rendimiento. A mayor número, ala más grande y más estable.", "specs": []}, {"id": "p64", "cat": "foil", "group": "Alas traseras ProLine", "name": "16 Flow ProLine", "price": 418, "desc": "Ala trasera (estabilizador) de la línea ProLine.", "specs": []}, {"id": "p65", "cat": "foil", "group": "Alas traseras ProLine", "name": "19 Flow ProLine", "price": 428, "desc": "Ala trasera (estabilizador) de la línea ProLine.", "specs": []}, {"id": "p66", "cat": "foil", "group": "Alas traseras ProLine", "name": "24 Flow ProLine", "price": 438, "desc": "Ala trasera (estabilizador) de la línea ProLine.", "specs": []}, {"id": "p67", "cat": "foil", "group": "Alas traseras ProLine", "name": "Grubb 16 ProLine", "price": 418, "desc": "Ala trasera (estabilizador) de la línea ProLine.", "specs": []}, {"id": "p68", "cat": "foil", "group": "Alas traseras ProLine", "name": "20 Carve ProLine", "price": 428, "desc": "Ala trasera (estabilizador) de la línea ProLine.", "specs": []}, {"id": "p69", "cat": "foil", "group": "Alas traseras ProLine", "name": "25 Carve ProLine", "price": 438, "desc": "Ala trasera (estabilizador) de la línea ProLine.", "specs": []}, {"id": "p70", "cat": "foil", "group": "Downwind / Florence", "name": "F86 Florence", "price": 1550, "desc": "Línea de alto rendimiento desarrollada con los hermanos Florence, pensada para downwind y race.", "specs": []}, {"id": "p71", "cat": "foil", "group": "Downwind / Florence", "name": "F100 Florence", "price": 1600, "desc": "Línea de alto rendimiento desarrollada con los hermanos Florence, pensada para downwind y race.", "specs": []}, {"id": "p72", "cat": "foil", "group": "Downwind / Florence", "name": "F20 Florence", "price": 448, "desc": "Línea de alto rendimiento desarrollada con los hermanos Florence, pensada para downwind y race.", "specs": []}, {"id": "p73", "cat": "foil", "group": "Downwind / Florence", "name": "F17 Florence", "price": 448, "desc": "Línea de alto rendimiento desarrollada con los hermanos Florence, pensada para downwind y race.", "specs": []}, {"id": "p74", "cat": "foil", "group": "Downwind / Florence", "name": "F14 Florence", "price": 448, "desc": "Línea de alto rendimiento desarrollada con los hermanos Florence, pensada para downwind y race.", "specs": []}];
 const byId = Object.fromEntries(PRODUCTS.map(p => [p.id, p]));
 const cart = {};
 let dest = "Argentina";
@@ -247,7 +281,7 @@ function render(cat){
     <div class="group">${cat === "efoil" ? "" : `<h3>${g}</h3>`}
       ${items.map(p => `
         <div class="item">
-          <div class="name">${p.name}</div>
+          <button class="name" data-info="${p.id}">${p.name}</button>
           <div class="price">${fmt(p.price)}</div>
           ${cart[p.id] ? `<div class="step" aria-label="Cantidad de ${p.name}">
               <button data-dec="${p.id}" aria-label="Quitar uno">−</button>
@@ -303,6 +337,9 @@ document.addEventListener("click", e => {
   if (t.dataset.inc) change(t.dataset.inc, 1);
   else if (t.dataset.dec) change(t.dataset.dec, -1);
   else if (t.dataset.add) { if (cart[t.dataset.add]) { document.getElementById("cart").classList.add("open"); document.getElementById("cartToggle").setAttribute("aria-expanded", true); } else change(t.dataset.add, 1); }
+  else if (t.dataset.info) openSheet(t.dataset.info);
+  else if (t.id === "sheetClose") document.getElementById("sheet").close();
+  else if (t.id === "sheetAdd") { const id = t.dataset.id; if (!cart[id]) change(id, 1); document.getElementById("sheet").close(); }
   else if (t.dataset.cat) selectTab(t.dataset.cat);
   else if (t.dataset.tab) selectTab(t.dataset.tab);
   else if (t.id === "cartToggle") {
@@ -312,6 +349,23 @@ document.addEventListener("click", e => {
   } else if (t.id === "sendBtn" && !t.disabled) send();
 });
 document.addEventListener("change", e => { if (e.target.name === "dest") { dest = e.target.value; update(); } });
+
+function openSheet(id){
+  const p = byId[id];
+  const img = document.getElementById("sheetImg");
+  img.innerHTML = p.img ? `<img src="${p.img}" alt="${p.name}">` : `<img class="mark" src="logo-blanco.png" alt="">`;
+  document.getElementById("sheetGrp").textContent = p.group;
+  document.getElementById("sheetTitle").textContent = p.name;
+  document.getElementById("sheetDesc").textContent = p.desc || "";
+  const specs = [...(p.specs || []), ["Seña (50 %)", fmt(p.price/2)], ["Envío e impuestos a Argentina", "Incluidos"]];
+  document.getElementById("sheetSpecs").innerHTML = specs.map(([k,v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join("");
+  document.getElementById("sheetPrice").innerHTML = `${fmt(p.price)}<small>Precio final en dólares</small>`;
+  const add = document.getElementById("sheetAdd");
+  add.dataset.id = id;
+  add.textContent = cart[id] ? `En tu pedido (${cart[id]})` : "Agregar al pedido";
+  document.getElementById("sheet").showModal();
+}
+document.getElementById("sheet").addEventListener("click", e => { if (e.target.id === "sheet") e.target.close(); });
 
 function selectTab(cat){
   currentCat = cat;

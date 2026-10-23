@@ -380,7 +380,7 @@ function setColor(id, c, scroll){
   colorSel[id] = c; const i = g.findIndex(x => x.c === c);
   document.querySelectorAll("#sheetColors .chip").forEach(b => b.setAttribute("aria-pressed", b.dataset.color === c));
   document.querySelectorAll(".gal-dots span").forEach((d,k) => d.classList.toggle("on", k === i));
-  if (scroll) { const gal = document.getElementById("gal"); gal.scrollTo({left: i * gal.clientWidth, behavior: "smooth"}); }
+  if (scroll) { const gal = document.getElementById("gal"), x = i * gal.clientWidth; gal.scrollTo({left: x, behavior: "smooth"}); setTimeout(() => { if (Math.abs(gal.scrollLeft - x) > 2) gal.scrollLeft = x; }, 450); }
 }
 function openSheet(id){
   const p = byId[id];

@@ -453,16 +453,19 @@ const SYN = [
   [["efoil","efoils","e-foil","electrica","electrico","motor","motorizada","con motor"], ["efoil"]],
   [["bateria","baterias","pila","autonomia","energia","kwh"], ["bateria"]],
   [["cargador","cargar","carga","charger"], ["cargador"]],
-  [["ala","alas","aleta","aletas","front","delantera","trasera","estabilizador"], ["ala"]],
+  [["ala","alas","aleta","aletas","hydrofoil"], ["ala"]],
+  [["delantera","delanteras","delantero","front","frontal"], ["delantera"]],
+  [["trasera","traseras","trasero","back","estabilizador","cola","tail"], ["trasera"]],
   [["mastil","mastiles","mast","palo"], ["mastil"]],
   [["tabla","tablas","board","plancha"], ["tabla"]],
-  [["sup","remo","remar","paddle","downwind"], ["sup","downwind"]],
+  [["sup","remo","remar","paddle"], ["sup"]],
+  [["downwind","travesia"], ["downwind"]],
   [["wing","wingfoil","wing foil"], ["wing"]],
   [["surf","ola","olas","prone"], ["surf","prone"]],
   [["wake","tow","lancha"], ["wake"]],
   [["control","mando","remoto","controlador","controller","gatillo"], ["control"]],
-  [["rueda","ruedas","carrito","transportar","llevar"], ["ruedas","mochila"]],
-  [["mochila","bolso","funda","bolsa","estuche"], ["mochila","bolso","funda"]],
+  [["rueda","ruedas","carrito","transportar"], ["ruedas"]],
+  [["mochila","bolso","bolsa","estuche"], ["mochila","bolso"]],
   [["helice","jet","propulsion","propulsor"], ["jet","helice","propulsion"]],
   [["inflable","blowfish","flotador"], ["blowfish"]],
   [["principiante","principiantes","aprender","empezar","inicio","novato","escuela","facil"], ["principiante"]],
@@ -474,43 +477,61 @@ const SYN = [
 ];
 const SYNMAP = {}; SYN.forEach(([words, terms]) => words.forEach(w => SYNMAP[norm(w)] = terms));
 function tagsFor(p){
-  const t = [p.name, p.group, CAT_LABEL[p.cat], p.desc, ...(p.specs || []).flat(), ...(p.gallery || []).map(g => g.c)];
+  // palabras clave "fuertes": nombre, familia, categoría, colores y etiquetas
+  const t = [p.name, p.group, CAT_LABEL[p.cat]];
   if (p.cat === "efoil") t.push("efoil tabla electrica");
-  if (/^Ala|Alas/.test(p.group)) t.push("ala");
+  const front = /delanteras|Alas LCS/.test(p.group) || /^F(86|100) Florence/.test(p.name);
+  const back = /traseras/.test(p.group) || /^F(14|17|20) Florence/.test(p.name);
+  if (front || back) t.push("ala", front ? "delantera" : "trasera");
   if (/Mástil/.test(p.group)) t.push("mastil");
   if (p.cat === "tabla") t.push("tabla");
+  if (/Flying Cat/.test(p.name)) t.push("sup paddle downwind");
   if ((p.cat === "efoil" && /^LIFT5 F( |$)/.test(p.name)) || /Blowfish|5’9|Prone\/Wing 5’2/.test(p.name)) t.push("principiante");
   if ((p.cat === "efoil" && /LIFTX/.test(p.name)) || /Light/.test(p.name)) t.push("liviano");
-  if (/LIFT5 F$|Prone 4’4/.test(p.name)) t.push("entrada");
+  if (/^LIFT5 F$|Prone 4’4/.test(p.name)) t.push("entrada");
   if (/Control/.test(p.name)) t.push("control");
+  if (/Batería/.test(p.name)) t.push("bateria");
+  if (/Cargador/.test(p.name)) t.push("cargador");
   return norm(t.join(" "));
 }
 const BOOST = {principiante: /^LIFT5 F$/, liviano: /^LIFTX$/, entrada: /^LIFT5 F$/};
-PRODUCTS.forEach(p => { p._tags = tagsFor(p); p._words = [...new Set(p._tags.split(/\s+/).filter(Boolean))]; p._name = norm(p.name); });
+PRODUCTS.forEach(p => {
+  p._key = tagsFor(p); p._words = [...new Set(p._key.split(/\s+/).filter(Boolean))]; p._name = norm(p.name);
+  p._desc = norm([p.desc, ...(p.specs || []).flat(), ...(p.gallery || []).map(g => g.c)].join(" "));
+});
 function lev(a, b){ if (Math.abs(a.length - b.length) > 2) return 9; const d = Array.from({length: a.length + 1}, (_, i) => [i]); for (let j = 1; j <= b.length; j++) d[0][j] = j;
-  for (let i = 1; i <= a.length; i++) for (let j = 1; j <= b.length; j++) d[i][j] = Math.min(d[i-1][j] + 1, d[i][j-1] + 1, d[i-1][j-1] + (a[i-1] === b[j-1] ? 0 : 1)); return d[a.length][b.length]; }
+  for (let i = 1; i <= a.length; i++) for (let j = 1; j <= b.length; j++) {
+    d[i][j] = Math.min(d[i-1][j] + 1, d[i][j-1] + 1, d[i-1][j-1] + (a[i-1] === b[j-1] ? 0 : 1));
+    if (i > 1 && j > 1 && a[i-1] === b[j-2] && a[i-2] === b[j-1]) d[i][j] = Math.min(d[i][j], d[i-2][j-2] + 1);
+  } return d[a.length][b.length]; }
 function termScore(p, term){
   if (p._name.startsWith(term)) return 8;
+  if (p._name.split(/\s+/).some(w => w.startsWith(term))) return 7;
   if (p._name.includes(term)) return 6;
-  if (p._words.some(w => w.startsWith(term))) return 4;
-  if (p._tags.includes(term)) return 3;
-  if (term.length >= 5 && !/\d/.test(term)) { const tol = term.length >= 7 ? 2 : 1; if (p._words.some(w => lev(term, w.slice(0, term.length + 1)) <= tol || lev(term, w) <= tol)) return 2; }
+  if (p._words.some(w => w.startsWith(term))) return 5;
+  if (term.length >= 5 && !/\d/.test(term)) {
+    const tol = term.length >= 8 ? 2 : 1, near = w => lev(term, w) <= tol || (w.length > term.length && lev(term, w.slice(0, term.length)) <= tol);
+    const nw = p._name.split(/\s+/);
+    if (near(nw[0])) return 4.5; if (nw.some(near)) return 3.5; if (p._words.some(near)) return 3;
+  }
+  if (term.length >= 4 && p._desc.split(/\s+/).some(w => w.startsWith(term))) return 1;   // coincidencia débil (descripción)
   return 0;
 }
 function search(q){
-  const tokens = norm(q).split(/\s+/).filter(t => t && !["de","la","el","los","las","para","con","un","una","y","en","busco","quiero","algo","que","sea","me","mi","necesito","tienen","hay"].includes(t));
+  const tokens = norm(q).split(/\s+/).filter(t => t && !["de","la","el","los","las","para","con","un","una","y","en","busco","quiero","algo","que","sea","me","mi","necesito","tienen","hay","del"].includes(t));
   if (!tokens.length) return null;
-  const tokScore = (p, tok) => Math.max(termScore(p, tok), ...(SYNMAP[tok] || []).map(a => { const s = termScore(p, a) * 0.7; return s && BOOST[a] && BOOST[a].test(p.name) ? s + 6 : s; }));
-  // palabras que no coinciden con ningún producto (p. ej. "algo") se ignoran
+  const tokScore = (p, tok) => Math.max(termScore(p, tok), ...(SYNMAP[tok] || []).map(a => { const s = termScore(p, a) * 0.9; return s && BOOST[a] && BOOST[a].test(p.name) ? s + 6 : s; }));
   const useful = tokens.filter(tok => PRODUCTS.some(p => tokScore(p, tok) > 0));
   if (!useful.length) return [];
-  const res = [];
+  let res = [];
   for (const p of PRODUCTS) {
-    let total = 0, ok = true;
-    for (const tok of useful) { const s = tokScore(p, tok); if (!s) { ok = false; break; } total += s; }
-    if (ok) res.push([total, p]);
+    let total = 0, strong = true, ok = true;
+    for (const tok of useful) { const s = tokScore(p, tok); if (!s) { ok = false; break; } total += s; if (s < 2) strong = false; }
+    if (ok) res.push({p, total, strong});
   }
-  return res.sort((a, b) => b[0] - a[0] || a[1].price - b[1].price).map(x => x[1]);
+  // si hay coincidencias claras (nombre, familia o etiqueta), se descartan las que solo aparecen en la descripción
+  if (res.some(r => r.strong)) res = res.filter(r => r.strong);
+  return res.sort((a, b) => b.total - a.total || a.p.price - b.p.price).map(r => r.p);
 }
 function itemHTML(p){
   return `<div class="item">
@@ -537,7 +558,7 @@ function renderSearch(){
     return;
   }
   const groups = {};
-  found.forEach(p => (groups[CAT_LABEL[p.cat]] ||= []).push(p));
+  found.forEach(p => (groups[p.cat === "efoil" ? "eFoils" : p.group] ||= []).push(p));
   el.innerHTML = Object.entries(groups).map(([g, items]) => `<div class="group"><h3>${g}</h3>${items.map(itemHTML).join("")}</div>`).join("");
 }
 const qEl = document.getElementById("q");

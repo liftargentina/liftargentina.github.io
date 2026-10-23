@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lift Argentina</title>
+<meta name="description" content="Representantes oficiales de Lift en Argentina. eFoils, foils y accesorios con precios en dólares, envío e impuestos incluidos.">
+<meta name="theme-color" content="#EAF3F9">
+<link rel="icon" href="logo-azul.png">
+<meta property="og:title" content="Lift Argentina">
+<meta property="og:description" content="eFoils Lift con precio final en dólares, puestos en Argentina.">
+<meta property="og:image" content="logo-azul.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cielo:#EAF3F9;
+  --celeste:#74ACDF;
+  --rio:#0E2433;
+  --agua:#16405C;
+  --espuma:#C9DDEB;
+  --sol:#F6B40E;
+  --blanco:#FFFFFF;
+  --tinta-suave:#4A6274;
+  --col:560px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--cielo);color:var(--rio);font-family:"Archivo",system-ui,sans-serif;font-variation-settings:"wdth" 100;font-size:17px;line-height:1.5;font-feature-settings:"tnum" 1}
+img{max-width:100%;display:block}
+a{color:inherit}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--sol);outline-offset:3px;border-radius:6px}
+.wrap{max-width:var(--col);margin:0 auto;padding:0 20px}
+.display{font-variation-settings:"wdth" 120;font-weight:760;letter-spacing:-.01em;line-height:1.05}
+
+/* Cielo */
+.sky{padding:36px 0 0;text-align:center}
+.sky .logo{width:min(100%,460px);height:auto;margin:0 auto}
+.sky p{max-width:30ch;margin:18px auto 0;color:var(--tinta-suave);font-size:16px}
+.actions{display:flex;flex-direction:column;gap:10px;margin:26px auto 0;max-width:360px}
+.btn{display:flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:12px 20px;border-radius:999px;text-decoration:none;font-weight:650;border:0;font-size:16px}
+.btn-wa{background:var(--rio);color:var(--blanco)}
+.btn-line{background:transparent;border:1.5px solid var(--rio);color:var(--rio)}
+.btn svg{width:20px;height:20px;flex:none}
+
+/* Horizonte */
+.horizon{display:block;width:100%;height:72px;margin-top:40px;color:var(--rio)}
+.water{background:var(--rio);color:var(--blanco);padding:8px 0 48px}
+.water h2{font-size:30px;margin:0 0 6px}
+.water .sub{color:var(--espuma);margin:0 0 26px;font-size:15px}
+.feature{border-top:1px solid rgba(201,221,235,.25);padding:26px 0}
+.feature:last-of-type{border-bottom:1px solid rgba(201,221,235,.25)}
+.feature h3{font-size:44px;margin:0}
+.feature .desc{color:var(--espuma);margin:8px 0 18px;max-width:38ch}
+.feature .row{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.price-big{font-size:30px;font-weight:700;font-variation-settings:"wdth" 110}
+.price-big small{display:block;font-size:13px;font-weight:450;color:var(--espuma);font-variation-settings:"wdth" 100}
+.btn-add{background:var(--sol);color:var(--rio);min-height:48px;padding:10px 20px}
+.btn-add[aria-pressed="true"]{background:var(--celeste)}
+.feature .also{font-size:14px;color:var(--espuma);margin:14px 0 0}
+.anchor{display:flex;justify-content:space-between;align-items:center;margin-top:26px;padding:18px 20px;border-radius:14px;background:var(--agua);text-decoration:none}
+.anchor strong{font-size:18px}
+.anchor span{color:var(--espuma);font-size:14px}
+
+/* Lista */
+.list{padding:48px 0 24px}
+.list h2{font-size:30px;margin:0 0 6px}
+.list .sub{color:var(--tinta-suave);margin:0 0 20px;font-size:15px}
+.tabs{display:flex;gap:6px;background:var(--espuma);padding:5px;border-radius:999px;position:sticky;top:10px;z-index:5}
+.tabs button{flex:1;border:0;background:transparent;padding:10px 8px;border-radius:999px;font-weight:600;font-size:15px}
+.tabs button[aria-selected="true"]{background:var(--blanco);box-shadow:0 1px 2px rgba(14,36,51,.15)}
+.group h3{font-size:14px;font-weight:650;color:var(--tinta-suave);margin:26px 0 4px}
+.item{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--espuma)}
+.item .name{flex:1;min-width:0;font-weight:520}
+.item .price{font-weight:650;white-space:nowrap}
+.step{display:flex;align-items:center;border:1.5px solid var(--rio);border-radius:999px;height:38px;flex:none}
+.step button{width:36px;height:100%;border:0;background:transparent;font-size:20px;line-height:1}
+.step output{min-width:18px;text-align:center;font-weight:650}
+.add-sm{flex:none;height:38px;padding:0 14px;border-radius:999px;border:1.5px solid var(--rio);background:transparent;font-weight:600;font-size:14px}
+
+/* Escuela y pasos */
+.school{padding:40px 0;border-top:1px solid var(--espuma)}
+.school h2,.how h2{font-size:26px;margin:0 0 8px}
+.school p{margin:0 0 18px;color:var(--tinta-suave)}
+.how{padding:8px 0 40px}
+.how ol{list-style:none;padding:0;margin:16px 0 0;counter-reset:s}
+.how li{counter-increment:s;display:grid;grid-template-columns:40px 1fr;gap:12px;padding:12px 0}
+.how li::before{content:counter(s);width:32px;height:32px;border-radius:50%;background:var(--rio);color:var(--blanco);display:grid;place-items:center;font-weight:700;font-size:15px}
+.how li b{display:block}
+.how li span{color:var(--tinta-suave);font-size:15px}
+footer{padding:28px 0 140px;color:var(--tinta-suave);font-size:14px;border-top:1px solid var(--espuma)}
+footer p{margin:0 0 8px}
+
+/* Carrito */
+.cart{position:fixed;left:0;right:0;bottom:0;z-index:20;padding:0 12px calc(12px + env(safe-area-inset-bottom))}
+.cart-bar{max-width:calc(var(--col) - 16px);margin:0 auto;background:var(--rio);color:var(--blanco);border-radius:20px;padding:14px 16px;box-shadow:0 10px 30px rgba(14,36,51,.35)}
+.cart[hidden]{display:none}
+.cart-top{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;background:none;border:0;padding:0;text-align:left;color:inherit}
+.cart-top .t{font-size:13px;color:var(--espuma)}
+.cart-top .total{font-size:20px;font-weight:700;font-variation-settings:"wdth" 110}
+.meter{height:6px;background:rgba(201,221,235,.25);border-radius:6px;margin:10px 0 8px;overflow:hidden}
+.meter i{display:block;height:100%;background:var(--sol);width:0;transition:width .3s ease}
+.cart-msg{font-size:14px;color:var(--espuma);margin:0 0 10px}
+.btn-send{width:100%;background:var(--sol);color:var(--rio)}
+.btn-send:disabled{background:rgba(201,221,235,.2);color:var(--espuma);cursor:not-allowed}
+.detail{display:none;margin:4px 0 12px;border-top:1px solid rgba(201,221,235,.25);padding-top:10px;max-height:45vh;overflow:auto}
+.cart.open .detail{display:block}
+.line{display:flex;justify-content:space-between;gap:10px;font-size:14px;padding:5px 0}
+.line.sum{font-weight:700;border-top:1px solid rgba(201,221,235,.25);margin-top:6px;padding-top:10px}
+.line.dim{color:var(--espuma)}
+.dest{display:flex;gap:8px;align-items:center;font-size:14px;margin:10px 0 4px;flex-wrap:wrap}
+.dest label{display:flex;gap:6px;align-items:center;padding:6px 12px;border:1px solid rgba(201,221,235,.4);border-radius:999px}
+.dest input{accent-color:var(--sol)}
+.note{font-size:13px;color:var(--espuma);margin:8px 0 0}
+.chev{transition:transform .2s ease;width:20px;height:20px}
+.cart.open .chev{transform:rotate(180deg)}
+
+@media (min-width:700px){
+  .sky{padding-top:56px}
+  .feature h3{font-size:52px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="sky">
+  <div class="wrap">
+    <img class="logo" src="logo-azul.png" alt="Lift Argentina" width="1600" height="822">
+    <p>Representantes oficiales de Lift en Argentina. Precios en dólares con envío e impuestos incluidos.</p>
+    <div class="actions">
+      <a class="btn btn-wa" href="https://wa.me/5493815080432?text=Hola%20Lift%20Argentina%2C%20quiero%20hacer%20una%20consulta." target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2l-.4-.2Z"/></svg>
+        Escribinos por WhatsApp
+      </a>
+      <a class="btn btn-line" href="#precios">Ver lista de precios</a>
+    </div>
+  </div>
+  <svg class="horizon" viewBox="0 0 1440 72" preserveAspectRatio="none" aria-hidden="true">
+    <path fill="currentColor" d="M0 40 C 180 10, 360 10, 540 34 S 900 64, 1080 38 S 1350 14, 1440 30 L1440 72 L0 72 Z"/>
+  </svg>
+</header>
+
+<main>
+<section class="water" aria-labelledby="dest-title">
+  <div class="wrap">
+    <h2 id="dest-title" class="display">eFoils destacados</h2>
+    <p class="sub">Precio final, puesto en Argentina.</p>
+
+    <article class="feature">
+      <h3 class="display">LIFT5</h3>
+      <p class="desc">El insignia de Lift: tabla de carbono y batería de 2,2 kWh para sesiones largas.</p>
+      <div class="row">
+        <div class="price-big">USD 16.999<small>Seña de USD 8.500</small></div>
+        <button class="btn btn-add" data-add="p0" aria-pressed="false">Agregar al pedido</button>
+      </div>
+      <p class="also">También en versión Full Range y edición Laird.</p>
+    </article>
+
+    <article class="feature">
+      <h3 class="display">LIFTX</h3>
+      <p class="desc">El más liviano de la línea, con batería de 1,0 kWh. Fácil de llevar y de armar.</p>
+      <div class="row">
+        <div class="price-big">USD 15.999<small>Seña de USD 8.000</small></div>
+        <button class="btn btn-add" data-add="p6" aria-pressed="false">Agregar al pedido</button>
+      </div>
+      <p class="also">También en edición Florence.</p>
+    </article>
+
+    <a class="anchor" href="#precios" data-tab="efoil">
+      <div><strong>eFoils desde USD 12.999</strong><br><span>Ver los 8 modelos</span></div>
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+    </a>
+  </div>
+</section>
+
+<section class="list" id="precios" aria-labelledby="precios-title">
+  <div class="wrap">
+    <h2 id="precios-title" class="display">Lista de precios</h2>
+    <p class="sub">Todos los precios en USD, con envío e impuestos a Argentina incluidos. Compra mínima: USD 2.000.</p>
+    <div class="tabs" role="tablist" aria-label="Categorías">
+      <button role="tab" aria-selected="true" data-cat="efoil">eFoils</button>
+      <button role="tab" aria-selected="false" data-cat="acc">Accesorios</button>
+      <button role="tab" aria-selected="false" data-cat="foil">Foils</button>
+    </div>
+    <div id="catalogo" role="tabpanel"></div>
+  </div>
+</section>
+
+<section class="school" aria-labelledby="escuela-title">
+  <div class="wrap">
+    <h2 id="escuela-title" class="display">Probalo antes de comprar</h2>
+    <p>Coordinamos pruebas en Windtoys, la escuela de deportes acuáticos con la que trabajamos. Escribinos y armamos el día.</p>
+    <a class="btn btn-line" href="https://www.instagram.com/windtoys_/" target="_blank" rel="noopener">Ver Windtoys en Instagram</a>
+  </div>
+</section>
+
+<section class="how" aria-labelledby="como-title">
+  <div class="wrap">
+    <h2 id="como-title" class="display">Cómo comprar</h2>
+    <ol>
+      <li><div><b>Armá tu pedido</b><span>Elegí tus productos y envialo por WhatsApp. El mínimo es USD 2.000.</span></div></li>
+      <li><div><b>Confirmamos y pagás la seña</b><span>Revisamos disponibilidad y abonás el 50 % del total.</span></div></li>
+      <li><div><b>Importamos tu equipo</b><span>Te avisamos en cada etapa del envío.</span></div></li>
+      <li><div><b>Lo recibís</b><span>Pagás el 50 % restante contra entrega.</span></div></li>
+    </ol>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Precios en dólares vigentes a octubre de 2026, con envío e impuestos a Argentina incluidos. Envíos a Uruguay: el flete se cotiza aparte.</p>
+    <p>WhatsApp: <a href="https://wa.me/5493815080432">+54 9 381 508-0432</a></p>
+  </div>
+</footer>
+
+<div class="cart" id="cart" hidden>
+  <div class="cart-bar">
+    <button class="cart-top" id="cartToggle" aria-expanded="false" aria-controls="cartDetail">
+      <div><div class="t">Tu pedido</div><div class="total" id="cartTotal">USD 0</div></div>
+      <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg>
+    </button>
+    <div class="detail" id="cartDetail"></div>
+    <div class="meter" aria-hidden="true"><i id="meter"></i></div>
+    <p class="cart-msg" id="cartMsg" aria-live="polite"></p>
+    <button class="btn btn-send" id="sendBtn" disabled>Enviar pedido por WhatsApp</button>
+  </div>
+</div>
+
+<script>
+const WA = "5493815080432";
+const MIN = 2000;
+const PRODUCTS = [{"id": "p0", "cat": "efoil", "group": "eFoils", "name": "LIFT5", "price": 16999}, {"id": "p1", "cat": "efoil", "group": "eFoils", "name": "LIFT5 Full Range", "price": 17599}, {"id": "p2", "cat": "efoil", "group": "eFoils", "name": "LIFT5 F", "price": 12999}, {"id": "p3", "cat": "efoil", "group": "eFoils", "name": "LIFT5 F Full Range", "price": 13468}, {"id": "p4", "cat": "efoil", "group": "eFoils", "name": "Laird LIFT5", "price": 17499}, {"id": "p5", "cat": "efoil", "group": "eFoils", "name": "Laird LIFT5 Full Range", "price": 17968}, {"id": "p6", "cat": "efoil", "group": "eFoils", "name": "LIFTX", "price": 15999}, {"id": "p7", "cat": "efoil", "group": "eFoils", "name": "Florence LIFTX", "price": 16999}, {"id": "p8", "cat": "acc", "group": "Baterías y carga", "name": "Batería Gen5 Full Range (repuesto)", "price": 4816}, {"id": "p9", "cat": "acc", "group": "Baterías y carga", "name": "Batería Gen5 Light", "price": 3926}, {"id": "p10", "cat": "acc", "group": "Baterías y carga", "name": "Batería LIFTX (repuesto)", "price": 4036}, {"id": "p11", "cat": "acc", "group": "Baterías y carga", "name": "Batería LIFTX Light (repuesto)", "price": 3379}, {"id": "p12", "cat": "acc", "group": "Baterías y carga", "name": "Adaptador de batería LIFTX", "price": 365}, {"id": "p13", "cat": "acc", "group": "Baterías y carga", "name": "Mochila para batería LIFT5", "price": 162}, {"id": "p14", "cat": "acc", "group": "Baterías y carga", "name": "Mochila para batería LIFTX", "price": 162}, {"id": "p15", "cat": "acc", "group": "Baterías y carga", "name": "Cargador Lift", "price": 1339}, {"id": "p16", "cat": "acc", "group": "Baterías y carga", "name": "Cargador rápido Gen5 / LIFTX", "price": 1573}, {"id": "p17", "cat": "acc", "group": "Accesorios", "name": "Control de mano Lift 2", "price": 895}, {"id": "p18", "cat": "acc", "group": "Accesorios", "name": "Blowfish 4’4 (tabla inflable)", "price": 1040}, {"id": "p19", "cat": "acc", "group": "Accesorios", "name": "Blowfish 4’9 (tabla inflable)", "price": 1040}, {"id": "p20", "cat": "acc", "group": "Accesorios", "name": "Blowfish 5’4 (tabla inflable)", "price": 1084}, {"id": "p21", "cat": "acc", "group": "Accesorios", "name": "Bolso estanco 6 L", "price": 78}, {"id": "p22", "cat": "acc", "group": "Accesorios", "name": "LCS Jet Kit", "price": 939}, {"id": "p23", "cat": "acc", "group": "Accesorios", "name": "Kit de tornillería LIFT5 / LIFTX", "price": 68}, {"id": "p24", "cat": "acc", "group": "Accesorios", "name": "eBox para LIFT5 y LIFTX", "price": 1151}, {"id": "p25", "cat": "acc", "group": "Accesorios", "name": "Ruedas de playa LIFT5", "price": 435}, {"id": "p26", "cat": "acc", "group": "Accesorios", "name": "Ruedas de playa para funda LIFT5 F 4’9", "price": 435}, {"id": "p27", "cat": "acc", "group": "Accesorios", "name": "Ruedas de playa para funda LIFT5 F 5’4", "price": 435}, {"id": "p28", "cat": "foil", "group": "Mástiles ProLine", "name": "28\" M8 Mast ProLine", "price": 1652}, {"id": "p29", "cat": "foil", "group": "Mástiles ProLine", "name": "30\" M8 Mast ProLine", "price": 1752}, {"id": "p30", "cat": "foil", "group": "Mástiles ProLine", "name": "32\" M8 Mast ProLine", "price": 1702}, {"id": "p31", "cat": "foil", "group": "Mástiles ProLine", "name": "36\" M8 Mast ProLine", "price": 1752}, {"id": "p32", "cat": "foil", "group": "Mástiles ProLine", "name": "Florence F9 Race 30 Mast", "price": 3358}, {"id": "p33", "cat": "foil", "group": "Alas delanteras Core Line", "name": "90 Havoc V2", "price": 1080}, {"id": "p34", "cat": "foil", "group": "Alas delanteras Core Line", "name": "120 Havoc V2", "price": 1100}, {"id": "p35", "cat": "foil", "group": "Alas delanteras Core Line", "name": "150 Havoc V2", "price": 1150}, {"id": "p36", "cat": "foil", "group": "Alas delanteras Core Line", "name": "200 Havoc V2", "price": 1200}, {"id": "p37", "cat": "foil", "group": "Alas delanteras Core Line", "name": "90 Vario", "price": 1080}, {"id": "p38", "cat": "foil", "group": "Alas delanteras Core Line", "name": "120 Vario", "price": 1100}, {"id": "p39", "cat": "foil", "group": "Alas delanteras Core Line", "name": "150 Vario", "price": 1150}, {"id": "p40", "cat": "foil", "group": "Alas delanteras Core Line", "name": "180 Vario", "price": 1200}, {"id": "p41", "cat": "foil", "group": "Alas delanteras Core Line", "name": "155 STOL", "price": 1200}, {"id": "p42", "cat": "foil", "group": "Alas delanteras Core Line", "name": "185 STOL", "price": 1250}, {"id": "p43", "cat": "foil", "group": "Alas delanteras Core Line", "name": "76 eRace", "price": 1400}, {"id": "p44", "cat": "foil", "group": "Alas LCS", "name": "120 Havoc V2 LCS", "price": 1468}, {"id": "p45", "cat": "foil", "group": "Alas LCS", "name": "Florence 137 LCS", "price": 1618}, {"id": "p46", "cat": "foil", "group": "Alas LCS", "name": "150 Havoc V2 LCS", "price": 1518}, {"id": "p47", "cat": "foil", "group": "Alas LCS", "name": "200 Havoc LCS", "price": 1568}, {"id": "p48", "cat": "foil", "group": "Alas LCS", "name": "120 Vario LCS", "price": 1468}, {"id": "p49", "cat": "foil", "group": "Alas LCS", "name": "150 Vario LCS", "price": 1518}, {"id": "p50", "cat": "foil", "group": "Alas LCS", "name": "210 Camber Pro LCS", "price": 1518}, {"id": "p51", "cat": "foil", "group": "Alas LCS", "name": "270 Camber Pro LCS", "price": 1618}, {"id": "p52", "cat": "foil", "group": "Alas traseras Core Line", "name": "20 Flow", "price": 382}, {"id": "p53", "cat": "foil", "group": "Alas traseras Core Line", "name": "25 Flow", "price": 392}, {"id": "p54", "cat": "foil", "group": "Alas traseras Core Line", "name": "30 Flow", "price": 402}, {"id": "p55", "cat": "foil", "group": "Alas traseras Core Line", "name": "21 Carve V2", "price": 382}, {"id": "p56", "cat": "foil", "group": "Alas traseras Core Line", "name": "26 Carve V2", "price": 392}, {"id": "p57", "cat": "foil", "group": "Alas traseras Core Line", "name": "20 eRace", "price": 448}, {"id": "p58", "cat": "foil", "group": "Alas delanteras ProLine", "name": "90 Havoc V2 ProLine", "price": 1450}, {"id": "p59", "cat": "foil", "group": "Alas delanteras ProLine", "name": "120 Havoc V2 ProLine", "price": 1500}, {"id": "p60", "cat": "foil", "group": "Alas delanteras ProLine", "name": "90 Vario ProLine", "price": 1450}, {"id": "p61", "cat": "foil", "group": "Alas delanteras ProLine", "name": "120 Vario ProLine", "price": 1500}, {"id": "p62", "cat": "foil", "group": "Alas delanteras ProLine", "name": "120 STOL ProLine", "price": 1500}, {"id": "p63", "cat": "foil", "group": "Alas delanteras ProLine", "name": "Grubb 150 ProLine", "price": 1300}, {"id": "p64", "cat": "foil", "group": "Alas traseras ProLine", "name": "16 Flow ProLine", "price": 418}, {"id": "p65", "cat": "foil", "group": "Alas traseras ProLine", "name": "19 Flow ProLine", "price": 428}, {"id": "p66", "cat": "foil", "group": "Alas traseras ProLine", "name": "24 Flow ProLine", "price": 438}, {"id": "p67", "cat": "foil", "group": "Alas traseras ProLine", "name": "Grubb 16 ProLine", "price": 418}, {"id": "p68", "cat": "foil", "group": "Alas traseras ProLine", "name": "20 Carve ProLine", "price": 428}, {"id": "p69", "cat": "foil", "group": "Alas traseras ProLine", "name": "25 Carve ProLine", "price": 438}, {"id": "p70", "cat": "foil", "group": "Downwind / Florence", "name": "F86 Florence", "price": 1550}, {"id": "p71", "cat": "foil", "group": "Downwind / Florence", "name": "F100 Florence", "price": 1600}, {"id": "p72", "cat": "foil", "group": "Downwind / Florence", "name": "F20 Florence", "price": 448}, {"id": "p73", "cat": "foil", "group": "Downwind / Florence", "name": "F17 Florence", "price": 448}, {"id": "p74", "cat": "foil", "group": "Downwind / Florence", "name": "F14 Florence", "price": 448}];
+const byId = Object.fromEntries(PRODUCTS.map(p => [p.id, p]));
+const cart = {};
+let dest = "Argentina";
+const fmt = n => "USD " + Math.round(n).toLocaleString("es-AR");
+
+function render(cat){
+  const el = document.getElementById("catalogo");
+  const groups = {};
+  PRODUCTS.filter(p => p.cat === cat).forEach(p => (groups[p.group] ||= []).push(p));
+  el.innerHTML = Object.entries(groups).map(([g, items]) => `
+    <div class="group">${cat === "efoil" ? "" : `<h3>${g}</h3>`}
+      ${items.map(p => `
+        <div class="item">
+          <div class="name">${p.name}</div>
+          <div class="price">${fmt(p.price)}</div>
+          ${cart[p.id] ? `<div class="step" aria-label="Cantidad de ${p.name}">
+              <button data-dec="${p.id}" aria-label="Quitar uno">−</button>
+              <output>${cart[p.id]}</output>
+              <button data-inc="${p.id}" aria-label="Agregar uno">+</button></div>`
+            : `<button class="add-sm" data-inc="${p.id}" aria-label="Agregar ${p.name}">Agregar</button>`}
+        </div>`).join("")}
+    </div>`).join("");
+}
+let currentCat = "efoil";
+
+function total(){ return Object.entries(cart).reduce((s,[id,q]) => s + byId[id].price*q, 0); }
+
+function update(){
+  const t = total();
+  const cartEl = document.getElementById("cart");
+  cartEl.hidden = t === 0;
+  if (t === 0) cartEl.classList.remove("open");
+  document.getElementById("cartTotal").textContent = fmt(t);
+  document.getElementById("meter").style.width = Math.min(100, t/MIN*100) + "%";
+  const ok = t >= MIN;
+  document.getElementById("sendBtn").disabled = !ok;
+  document.getElementById("cartMsg").textContent = ok
+    ? `Seña del 50 %: ${fmt(t/2)}. El resto, contra entrega.`
+    : `Te faltan ${fmt(MIN - t)} para llegar a la compra mínima de USD 2.000.`;
+  const lines = Object.entries(cart).map(([id,q]) =>
+    `<div class="line"><span>${q} × ${byId[id].name}</span><span>${fmt(byId[id].price*q)}</span></div>`).join("");
+  document.getElementById("cartDetail").innerHTML = lines +
+    `<div class="line sum"><span>Total</span><span>${fmt(t)}</span></div>
+     <div class="line dim"><span>Seña (50 %)</span><span>${fmt(t/2)}</span></div>
+     <div class="line dim"><span>Contra entrega (50 %)</span><span>${fmt(t/2)}</span></div>
+     <div class="dest" role="radiogroup" aria-label="Destino del envío"><span>Envío a</span>
+       <label><input type="radio" name="dest" value="Argentina" ${dest==="Argentina"?"checked":""}> Argentina</label>
+       <label><input type="radio" name="dest" value="Uruguay" ${dest==="Uruguay"?"checked":""}> Uruguay</label></div>
+     <p class="note">${dest === "Uruguay" ? "Para Uruguay cotizamos el flete aparte y te confirmamos el total por WhatsApp." : "Confirmamos disponibilidad y precio final por WhatsApp antes de la seña."}</p>`;
+  document.querySelectorAll("[data-add]").forEach(b => {
+    const on = !!cart[b.dataset.add];
+    b.setAttribute("aria-pressed", on);
+    b.textContent = on ? `En tu pedido (${cart[b.dataset.add]})` : "Agregar al pedido";
+  });
+  render(currentCat);
+}
+
+function change(id, d){
+  cart[id] = (cart[id] || 0) + d;
+  if (cart[id] <= 0) delete cart[id];
+  update();
+}
+
+document.addEventListener("click", e => {
+  const t = e.target.closest("button,a");
+  if (!t) return;
+  if (t.dataset.inc) change(t.dataset.inc, 1);
+  else if (t.dataset.dec) change(t.dataset.dec, -1);
+  else if (t.dataset.add) { if (cart[t.dataset.add]) { document.getElementById("cart").classList.add("open"); document.getElementById("cartToggle").setAttribute("aria-expanded", true); } else change(t.dataset.add, 1); }
+  else if (t.dataset.cat) selectTab(t.dataset.cat);
+  else if (t.dataset.tab) selectTab(t.dataset.tab);
+  else if (t.id === "cartToggle") {
+    const c = document.getElementById("cart");
+    c.classList.toggle("open");
+    t.setAttribute("aria-expanded", c.classList.contains("open"));
+  } else if (t.id === "sendBtn" && !t.disabled) send();
+});
+document.addEventListener("change", e => { if (e.target.name === "dest") { dest = e.target.value; update(); } });
+
+function selectTab(cat){
+  currentCat = cat;
+  document.querySelectorAll(".tabs button").forEach(b => b.setAttribute("aria-selected", b.dataset.cat === cat));
+  render(cat);
+}
+
+function send(){
+  const t = total();
+  const lines = Object.entries(cart).map(([id,q]) => `• ${q} × ${byId[id].name} — ${fmt(byId[id].price*q)}`);
+  const msg = ["¡Hola Lift Argentina! Quiero hacer este pedido:", "", ...lines, "",
+    `Total: ${fmt(t)}`, `Seña 50 %: ${fmt(t/2)}`, `Envío a: ${dest}`].join("\n");
+  window.open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`, "_blank", "noopener");
+}
+
+render("efoil");
+</script>
+</body>
+</html>

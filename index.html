@@ -139,7 +139,8 @@ dialog.sheet::backdrop{background:rgba(14,36,51,.55)}
 .sheet-price small{display:block;font-size:14px;font-weight:450;color:var(--tinta-suave);font-variation-settings:"wdth" 100;margin-bottom:14px}
 .sheet .btn-add{width:100%}
 .item .price{font-weight:650;white-space:nowrap}
-.step{display:flex;align-items:center;border:1.5px solid var(--rio);border-radius:999px;height:38px;flex:none}
+.step{display:flex;align-items:center;border:1.5px solid #C3CED8;background:#DCE4EB;color:var(--tinta-suave);border-radius:999px;height:38px;flex:none}
+.step output{color:var(--rio)}
 .step button{width:36px;height:100%;border:0;background:transparent;font-size:20px;line-height:1}
 .step output{min-width:18px;text-align:center;font-weight:650}
 .add-sm{flex:none;height:38px;padding:0 14px;border-radius:999px;border:1.5px solid var(--rio);background:transparent;font-weight:600;font-size:14px}
@@ -170,6 +171,11 @@ footer p{margin:0 0 8px}
 .detail{display:none;margin:4px 0 12px;border-top:1px solid rgba(201,221,235,.25);padding-top:10px;max-height:45vh;overflow:auto}
 .cart.open .detail{display:block}
 .line{display:flex;justify-content:space-between;gap:10px;font-size:14px;padding:5px 0}
+.item-line{align-items:center}
+.item-line span:first-child{flex:1;min-width:0}
+.rm{flex:none;width:34px;height:34px;border:0;border-radius:50%;background:rgba(201,221,235,.12);color:var(--espuma);display:grid;place-items:center}
+.rm svg{width:17px;height:17px}
+.rm:hover{background:rgba(232,89,12,.25);color:var(--blanco)}
 .line.sum{font-weight:700;border-top:1px solid rgba(201,221,235,.25);margin-top:6px;padding-top:10px}
 .line.dim{color:var(--espuma)}
 .dest{display:flex;gap:8px;align-items:center;font-size:14px;margin:10px 0 4px;flex-wrap:wrap}
@@ -363,7 +369,7 @@ function update(){
     ? `Seña del 50 %: ${fmt(t/2)}. El resto, contra entrega.`
     : `Te faltan ${fmt(MIN - t)} para llegar a la compra mínima de USD 2.000.`;
   const lines = Object.entries(cart).map(([id,q]) =>
-    `<div class="line"><span>${q} × ${byId[id].name}${colorSel[id] ? ` · ${colorSel[id]}` : ""}</span><span>${fmt(byId[id].price*q)}</span></div>`).join("");
+    `<div class="line item-line"><span>${q} × ${byId[id].name}${colorSel[id] ? ` · ${colorSel[id]}` : ""}</span><span class="amt">${fmt(byId[id].price*q)}</span><button class="rm" data-remove="${id}" aria-label="Quitar ${byId[id].name} del pedido"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/></svg></button></div>`).join("");
   document.getElementById("cartDetail").innerHTML = lines +
     `<div class="line sum"><span>Total</span><span>${fmt(t)}</span></div>
      <div class="line dim"><span>Seña (50 %)</span><span>${fmt(t/2)}</span></div>
@@ -389,7 +395,8 @@ function change(id, d){
 document.addEventListener("click", e => {
   const t = e.target.closest("button,a");
   if (!t) return;
-  if (t.dataset.inc) change(t.dataset.inc, 1);
+  if (t.dataset.remove) { delete cart[t.dataset.remove]; update(); }
+  else if (t.dataset.inc) change(t.dataset.inc, 1);
   else if (t.dataset.dec) change(t.dataset.dec, -1);
   else if (t.dataset.add) { if (cart[t.dataset.add]) { document.getElementById("cart").classList.add("open"); document.getElementById("cartToggle").setAttribute("aria-expanded", true); } else change(t.dataset.add, 1); }
   else if (t.dataset.color) setColor(t.dataset.pid, t.dataset.color, true);

@@ -77,12 +77,25 @@ button{font:inherit;color:inherit;cursor:pointer}
 .list{padding:48px 0 24px}
 .list h2{font-size:30px;margin:0 0 6px}
 .list .sub{color:var(--tinta-suave);margin:0 0 20px;font-size:15px}
-.tabs{display:flex;gap:6px;background:var(--espuma);padding:5px;border-radius:999px;position:sticky;top:10px;z-index:5}
+.finder{position:sticky;top:0;z-index:5;background:var(--cielo);padding:10px 0 8px;margin:0 -4px;padding-left:4px;padding-right:4px}
+.search{display:flex;align-items:center;gap:8px;background:var(--blanco);border:1.5px solid var(--espuma);border-radius:999px;padding:0 6px 0 14px;margin-bottom:8px;height:48px}
+.search:focus-within{border-color:var(--rio)}
+.search svg{width:20px;height:20px;flex:none;color:var(--tinta-suave)}
+.search input{flex:1;min-width:0;border:0;outline:0;background:transparent;font:inherit;font-size:16px;color:var(--rio);height:100%}
+.search input::-webkit-search-cancel-button{display:none}
+.search button{width:36px;height:36px;border:0;border-radius:50%;background:var(--espuma);font-size:20px;line-height:1;flex:none}
+.results{margin:10px 0 0;font-size:14px;color:var(--tinta-suave)}
+.results:empty{display:none}
+.tabs.dim button[aria-selected="true"]{background:transparent;box-shadow:none}
+.empty{padding:28px 0;text-align:center;color:var(--tinta-suave)}
+.empty .btn{margin:16px auto 0;max-width:320px}
+.tabs{display:flex;gap:6px;background:var(--espuma);padding:5px;border-radius:999px}
 .tabs button{flex:1;border:0;background:transparent;padding:10px 4px;border-radius:999px;font-weight:600;font-size:14px}
 .tabs button[aria-selected="true"]{background:var(--blanco);box-shadow:0 1px 2px rgba(14,36,51,.15)}
 .group h3{font-size:14px;font-weight:650;color:var(--tinta-suave);margin:26px 0 4px}
 .item{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--espuma)}
-.item .name{flex:1;min-width:0;font-weight:520;text-align:left;background:none;border:0;padding:4px 0;text-decoration:underline;text-decoration-color:var(--espuma);text-underline-offset:4px;text-decoration-thickness:1.5px}
+.item .name{flex:1;min-width:0;font-weight:520;text-align:left;background:none;border:0;padding:4px 0}
+.item .nm{text-decoration:underline;text-decoration-color:var(--espuma);text-underline-offset:4px;text-decoration-thickness:1.5px}
 .low{display:table;margin-top:6px;padding:2px 9px;border-radius:999px;background:var(--naranja);color:var(--blanco);font-size:12px;font-weight:650;text-decoration:none;vertical-align:2px;white-space:nowrap}
 .sheet-img .low{position:absolute;top:14px;left:14px;z-index:2;margin:0;font-size:13px;padding:5px 12px}
 .more{background:none;border:0;padding:0;color:var(--espuma);text-decoration:underline;text-underline-offset:4px;font-size:15px;margin:0 0 18px}
@@ -233,12 +246,20 @@ footer p{margin:0 0 8px}
   <div class="wrap">
     <h2 id="precios-title" class="display">Lista de precios</h2>
     <p class="sub">Todos los precios en USD, con envío e impuestos a Argentina incluidos. Compra mínima: USD 2.000.</p>
+    <div class="finder">
+    <div class="search" role="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <input type="search" id="q" placeholder="Buscar: batería, ala 150, tabla wing…" autocomplete="off" enterkeyhint="search" aria-label="Buscar productos">
+      <button type="button" id="qClear" aria-label="Borrar búsqueda" hidden>×</button>
+    </div>
     <div class="tabs" role="tablist" aria-label="Categorías">
       <button role="tab" aria-selected="true" data-cat="efoil">eFoils</button>
       <button role="tab" aria-selected="false" data-cat="acc">Accesorios</button>
       <button role="tab" aria-selected="false" data-cat="foil">Foils</button>
       <button role="tab" aria-selected="false" data-cat="tabla">Tablas</button>
     </div>
+    </div>
+    <p class="results" id="results" aria-live="polite"></p>
     <div id="catalogo" role="tabpanel"></div>
   </div>
 </section>
@@ -307,7 +328,7 @@ function render(cat){
     <div class="group">${cat === "efoil" ? "" : `<h3>${g}</h3>`}
       ${items.map(p => `
         <div class="item">
-          <button class="name" data-info="${p.id}">${p.name}${p.low ? `<span class="low">Últimas en stock</span>` : ""}</button>
+          <button class="name" data-info="${p.id}"><span class="nm">${p.name}</span>${p.low ? `<span class="low">Últimas en stock</span>` : ""}</button>
           <div class="price">${fmt(p.price)}</div>
           ${cart[p.id] ? `<div class="step" aria-label="Cantidad de ${p.name}">
               <button data-dec="${p.id}" aria-label="Quitar uno">−</button>
@@ -348,7 +369,7 @@ function update(){
     b.setAttribute("aria-pressed", on);
     b.textContent = on ? `En tu pedido (${cart[b.dataset.add]})` : "Agregar al pedido";
   });
-  render(currentCat);
+  if (query) renderSearch(); else render(currentCat);
 }
 
 function change(id, d){
@@ -417,7 +438,107 @@ function openSheet(id){
 }
 document.getElementById("sheet").addEventListener("click", e => { if (e.target.id === "sheet") e.target.close(); });
 
+const norm = s => (s || "").toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[’'"”]/g, "").replace(/[^a-z0-9.,\s/-]/g, " ");
+const CAT_LABEL = {efoil: "eFoils", acc: "Accesorios", foil: "Foils", tabla: "Tablas"};
+// intención: palabras que el cliente puede usar -> términos que buscamos en el producto
+const SYN = [
+  [["efoil","efoils","e-foil","electrica","electrico","motor","motorizada","con motor"], ["efoil"]],
+  [["bateria","baterias","pila","autonomia","energia","kwh"], ["bateria"]],
+  [["cargador","cargar","carga","charger"], ["cargador"]],
+  [["ala","alas","aleta","aletas","front","delantera","trasera","estabilizador"], ["ala"]],
+  [["mastil","mastiles","mast","palo"], ["mastil"]],
+  [["tabla","tablas","board","plancha"], ["tabla"]],
+  [["sup","remo","remar","paddle","downwind"], ["sup","downwind"]],
+  [["wing","wingfoil","wing foil"], ["wing"]],
+  [["surf","ola","olas","prone"], ["surf","prone"]],
+  [["wake","tow","lancha"], ["wake"]],
+  [["control","mando","remoto","controlador","controller","gatillo"], ["control"]],
+  [["rueda","ruedas","carrito","transportar","llevar"], ["ruedas","mochila"]],
+  [["mochila","bolso","funda","bolsa","estuche"], ["mochila","bolso","funda"]],
+  [["helice","jet","propulsion","propulsor"], ["jet","helice","propulsion"]],
+  [["inflable","blowfish","flotador"], ["blowfish"]],
+  [["principiante","principiantes","aprender","empezar","inicio","novato","escuela","facil"], ["principiante"]],
+  [["liviano","liviana","ligero","ligera","livianito","portatil"], ["liviano"]],
+  [["barato","barata","economico","economica","entrada","accesible"], ["entrada"]],
+  [["florence"], ["florence"]], [["laird"], ["laird"]], [["pyzel"], ["pyzel"]],
+  [["azul","celeste"], ["blue"]], [["blanco","blanca"], ["white"]], [["negro","negra"], ["black"]],
+  [["rojo","roja"], ["red"]], [["verde"], ["green"]], [["amarillo","dorado"], ["sun kissed"]]
+];
+const SYNMAP = {}; SYN.forEach(([words, terms]) => words.forEach(w => SYNMAP[norm(w)] = terms));
+function tagsFor(p){
+  const t = [p.name, p.group, CAT_LABEL[p.cat], p.desc, ...(p.specs || []).flat(), ...(p.gallery || []).map(g => g.c)];
+  if (p.cat === "efoil") t.push("efoil tabla electrica");
+  if (/^Ala|Alas/.test(p.group)) t.push("ala");
+  if (/Mástil/.test(p.group)) t.push("mastil");
+  if (p.cat === "tabla") t.push("tabla");
+  if ((p.cat === "efoil" && /^LIFT5 F( |$)/.test(p.name)) || /Blowfish|5’9|Prone\/Wing 5’2/.test(p.name)) t.push("principiante");
+  if ((p.cat === "efoil" && /LIFTX/.test(p.name)) || /Light/.test(p.name)) t.push("liviano");
+  if (/LIFT5 F$|Prone 4’4/.test(p.name)) t.push("entrada");
+  if (/Control/.test(p.name)) t.push("control");
+  return norm(t.join(" "));
+}
+const BOOST = {principiante: /^LIFT5 F$/, liviano: /^LIFTX$/, entrada: /^LIFT5 F$/};
+PRODUCTS.forEach(p => { p._tags = tagsFor(p); p._words = [...new Set(p._tags.split(/\s+/).filter(Boolean))]; p._name = norm(p.name); });
+function lev(a, b){ if (Math.abs(a.length - b.length) > 2) return 9; const d = Array.from({length: a.length + 1}, (_, i) => [i]); for (let j = 1; j <= b.length; j++) d[0][j] = j;
+  for (let i = 1; i <= a.length; i++) for (let j = 1; j <= b.length; j++) d[i][j] = Math.min(d[i-1][j] + 1, d[i][j-1] + 1, d[i-1][j-1] + (a[i-1] === b[j-1] ? 0 : 1)); return d[a.length][b.length]; }
+function termScore(p, term){
+  if (p._name.startsWith(term)) return 8;
+  if (p._name.includes(term)) return 6;
+  if (p._words.some(w => w.startsWith(term))) return 4;
+  if (p._tags.includes(term)) return 3;
+  if (term.length >= 5 && !/\d/.test(term)) { const tol = term.length >= 7 ? 2 : 1; if (p._words.some(w => lev(term, w.slice(0, term.length + 1)) <= tol || lev(term, w) <= tol)) return 2; }
+  return 0;
+}
+function search(q){
+  const tokens = norm(q).split(/\s+/).filter(t => t && !["de","la","el","los","las","para","con","un","una","y","en","busco","quiero","algo","que","sea","me","mi","necesito","tienen","hay"].includes(t));
+  if (!tokens.length) return null;
+  const tokScore = (p, tok) => Math.max(termScore(p, tok), ...(SYNMAP[tok] || []).map(a => { const s = termScore(p, a) * 0.7; return s && BOOST[a] && BOOST[a].test(p.name) ? s + 6 : s; }));
+  // palabras que no coinciden con ningún producto (p. ej. "algo") se ignoran
+  const useful = tokens.filter(tok => PRODUCTS.some(p => tokScore(p, tok) > 0));
+  if (!useful.length) return [];
+  const res = [];
+  for (const p of PRODUCTS) {
+    let total = 0, ok = true;
+    for (const tok of useful) { const s = tokScore(p, tok); if (!s) { ok = false; break; } total += s; }
+    if (ok) res.push([total, p]);
+  }
+  return res.sort((a, b) => b[0] - a[0] || a[1].price - b[1].price).map(x => x[1]);
+}
+function itemHTML(p){
+  return `<div class="item">
+          <button class="name" data-info="${p.id}"><span class="nm">${p.name}</span>${p.low ? `<span class="low">Últimas en stock</span>` : ""}</button>
+          <div class="price">${fmt(p.price)}</div>
+          ${cart[p.id] ? `<div class="step" aria-label="Cantidad de ${p.name}">
+              <button data-dec="${p.id}" aria-label="Quitar uno">−</button>
+              <output>${cart[p.id]}</output>
+              <button data-inc="${p.id}" aria-label="Agregar uno">+</button></div>`
+            : `<button class="add-sm" data-inc="${p.id}" aria-label="Agregar ${p.name}">Agregar</button>`}
+        </div>`;
+}
+let query = "";
+function renderSearch(){
+  const el = document.getElementById("catalogo"), info = document.getElementById("results");
+  const found = search(query);
+  document.querySelector(".tabs").classList.toggle("dim", !!found);
+  document.getElementById("qClear").hidden = !query;
+  if (!found) { info.textContent = ""; render(currentCat); return; }
+  info.textContent = found.length ? `${found.length} ${found.length === 1 ? "resultado" : "resultados"} para “${query.trim()}”` : "";
+  if (!found.length) {
+    el.innerHTML = `<div class="empty">No encontramos productos para “${query.trim()}”. Probá con otra palabra, como “batería”, “ala” o “tabla”.
+      <a class="btn btn-wa" href="https://wa.me/${WA}?text=${encodeURIComponent("Hola Lift Argentina, estoy buscando: " + query.trim())}" target="_blank" rel="noopener">Consultanos por WhatsApp</a></div>`;
+    return;
+  }
+  const groups = {};
+  found.forEach(p => (groups[CAT_LABEL[p.cat]] ||= []).push(p));
+  el.innerHTML = Object.entries(groups).map(([g, items]) => `<div class="group"><h3>${g}</h3>${items.map(itemHTML).join("")}</div>`).join("");
+}
+const qEl = document.getElementById("q");
+qEl.addEventListener("input", () => { query = qEl.value; renderSearch(); });
+qEl.addEventListener("keydown", e => { if (e.key === "Enter") qEl.blur(); });
+document.getElementById("qClear").addEventListener("click", () => { qEl.value = ""; query = ""; renderSearch(); qEl.focus(); });
+
 function selectTab(cat){
+  if (query) { query = ""; qEl.value = ""; document.getElementById("results").textContent = ""; document.querySelector(".tabs").classList.remove("dim"); document.getElementById("qClear").hidden = true; }
   currentCat = cat;
   document.querySelectorAll(".tabs button").forEach(b => b.setAttribute("aria-selected", b.dataset.cat === cat));
   render(cat);

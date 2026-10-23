@@ -43,13 +43,15 @@ button{font:inherit;color:inherit;cursor:pointer}
 .hero-back{display:none}
 @media (min-width:700px){.hero-back{display:block;position:absolute;inset:-40px;width:calc(100% + 80px);height:calc(100% + 80px);object-fit:cover;filter:blur(28px) saturate(1.1)}.hero-bg{left:50%;right:auto;width:min(100%,680px);transform:translateX(-50%);-webkit-mask-image:linear-gradient(to right,transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(to right,transparent,#000 12%,#000 88%,transparent)}}
 .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,rgba(14,36,51,.18) 0%,rgba(14,36,51,0) 28%,rgba(14,36,51,0) 80%,rgba(14,36,51,.35) 100%)}
-.hero-in{position:relative;z-index:1;flex:1;display:flex;flex-direction:column;width:100%;padding-top:30px;padding-bottom:8px}
+.hero-in{position:relative;z-index:1;flex:1;display:flex;flex-direction:column;width:100%;padding-top:30px;padding-bottom:0}
 .hero .logo{width:min(100%,430px);height:auto;margin:0 auto;filter:drop-shadow(0 2px 10px rgba(14,36,51,.25))}
-.search-open{display:flex;align-items:center;gap:10px;width:100%;max-width:360px;margin:0 auto 22px;height:50px;padding:0 16px;border-radius:999px;border:1.5px solid rgba(201,221,235,.45);background:rgba(255,255,255,.08);color:var(--espuma);font-size:15px;text-align:left}
+.search-open{display:flex;align-items:center;gap:10px;width:100%;max-width:360px;margin:0 auto 12px;height:50px;padding:0 16px;border-radius:999px;border:1.5px solid rgba(201,221,235,.45);background:rgba(255,255,255,.08);color:var(--espuma);font-size:15px;text-align:left}
 .search-open svg,.fab-search svg{width:20px;height:20px;flex:none}
 .fab-search{position:fixed;top:14px;right:14px;z-index:15;width:48px;height:48px;border-radius:50%;border:0;background:var(--blanco);color:var(--rio);display:grid;place-items:center;box-shadow:0 4px 16px rgba(14,36,51,.25)}
 .fab-search[hidden]{display:none}
-.intro{text-align:center;padding:4px 0 34px;margin-bottom:8px;border-bottom:1px solid rgba(201,221,235,.25)}
+.tagline{width:min(100%,430px);margin:2px auto 0;padding-right:3%;text-align:right;font-size:11.5px;line-height:1.3;color:rgba(255,255,255,.9);text-shadow:0 1px 6px rgba(14,36,51,.5)}
+.price-note{margin:12px 0 0;font-size:13px;color:var(--tinta-suave)}
+.intro{text-align:center;padding:10px 0 30px}
 .intro p{max-width:32ch;margin:0 auto;font-size:16px;color:var(--espuma)}
 .actions{display:flex;flex-direction:column;gap:10px;margin:26px auto 0;max-width:360px}
 .btn{display:flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:12px 20px;border-radius:999px;text-decoration:none;font-weight:650;border:0;font-size:16px}
@@ -79,7 +81,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .anchor span{color:var(--espuma);font-size:14px}
 
 /* Lista */
-.list{padding:48px 0 24px}
+.list{padding:28px 0 24px}
 .list h2{font-size:30px;margin:0 0 6px}
 .list .sub{color:var(--tinta-suave);margin:0 0 20px;font-size:15px}
 .finder{position:sticky;top:0;z-index:5;background:var(--cielo);padding:10px 0 8px;margin:0 -4px;padding-left:4px;padding-right:4px}
@@ -199,6 +201,7 @@ footer p{margin:0 0 8px}
   <img class="hero-bg" src="hero.jpg" alt="Rider volando con un eFoil Lift en un lago de montaña" width="1536" height="2052" fetchpriority="high">
   <div class="hero-in wrap">
     <img class="logo" src="logo-blanco.png" alt="Lift Argentina" width="1600" height="822">
+    <p class="tagline">Representantes oficiales de Lift en Argentina</p>
   </div>
   <svg class="horizon" viewBox="0 0 1440 56" preserveAspectRatio="none" aria-hidden="true">
     <path fill="currentColor" d="M0 30 C 180 6, 360 6, 540 26 S 900 50, 1080 28 S 1350 10, 1440 22 L1440 56 L0 56 Z"/>
@@ -209,19 +212,16 @@ footer p{margin:0 0 8px}
 <section class="water" aria-labelledby="dest-title">
   <div class="wrap">
     <div class="intro">
-      <button class="search-open" data-search><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><span>Buscar productos: batería, ala, tabla…</span></button>
-      <p>Representantes oficiales de Lift en Argentina. Precios en dólares con envío e impuestos incluidos.</p>
+      <button class="search-open" data-search><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><span>Buscar productos</span></button>
       <div class="actions">
       <a class="btn btn-wa" href="https://wa.me/5493815080432?text=Hola%20Lift%20Argentina%2C%20quiero%20hacer%20una%20consulta." target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2l-.4-.2Z"/></svg>
         Escribinos por WhatsApp
       </a>
-      <a class="btn btn-line" href="#precios">Ver lista de precios</a>
       </div>
     </div>
 
     <h2 id="dest-title" class="display">eFoils destacados</h2>
-    <p class="sub">Precio final, puesto en Argentina.</p>
 
     <article class="feature">
       <h3 class="display">LIFT5</h3>
@@ -229,7 +229,7 @@ footer p{margin:0 0 8px}
       <p class="desc">El modelo insignia de Lift, con tabla de carbono. Batería Gen5 Light de serie o Full Range de hasta 90 minutos.</p>
       <button class="more" data-info="p0">Ver detalles</button>
       <div class="row">
-        <div class="price-big">USD 16.999<small>Seña de USD 8.500</small></div>
+        <div class="price-big">USD 16.999<small>Envío e impuestos incluidos. Seña de USD 8.500</small></div>
         <button class="btn btn-add" data-add="p0" aria-pressed="false">Agregar al pedido</button>
       </div>
       <p class="also">También en versión Full Range y edición Laird.</p>
@@ -241,7 +241,7 @@ footer p{margin:0 0 8px}
       <p class="desc">El más liviano de la línea: se siente como un foil de surf, con motor cuando lo necesitás.</p>
       <button class="more" data-info="p6">Ver detalles</button>
       <div class="row">
-        <div class="price-big">USD 15.999<small>Seña de USD 8.000</small></div>
+        <div class="price-big">USD 15.999<small>Envío e impuestos incluidos. Seña de USD 8.000</small></div>
         <button class="btn btn-add" data-add="p6" aria-pressed="false">Agregar al pedido</button>
       </div>
       <p class="also">También en edición Florence.</p>
@@ -254,14 +254,12 @@ footer p{margin:0 0 8px}
   </div>
 </section>
 
-<section class="list" id="precios" aria-labelledby="precios-title">
+<section class="list" id="precios" aria-label="Lista de precios">
   <div class="wrap">
-    <h2 id="precios-title" class="display">Lista de precios</h2>
-    <p class="sub">Todos los precios en USD, con envío e impuestos a Argentina incluidos. Compra mínima: USD 2.000.</p>
     <div class="finder">
     <div class="search" role="search">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-      <input type="search" id="q" placeholder="Buscar: batería, ala 150, tabla wing…" autocomplete="off" enterkeyhint="search" aria-label="Buscar productos">
+      <input type="search" id="q" placeholder="Buscar productos" autocomplete="off" enterkeyhint="search" aria-label="Buscar productos">
       <button type="button" id="qClear" aria-label="Borrar búsqueda" hidden>×</button>
     </div>
     <div class="tabs" role="tablist" aria-label="Categorías">
@@ -272,6 +270,7 @@ footer p{margin:0 0 8px}
     </div>
     </div>
     <p class="results" id="results" aria-live="polite"></p>
+    <p class="price-note">Precios finales en USD, con envío e impuestos a Argentina incluidos.</p>
     <div id="catalogo" role="tabpanel"></div>
   </div>
 </section>
@@ -291,7 +290,7 @@ footer p{margin:0 0 8px}
 
 <footer>
   <div class="wrap">
-    <p>Precios y especificaciones de la línea 2027, vigentes a octubre de 2026, con envío e impuestos a Argentina incluidos. Envíos a Uruguay: el flete se cotiza aparte.</p>
+    <p>Línea 2027, precios vigentes a octubre de 2026. Envíos a Uruguay: el flete se cotiza aparte.</p>
     <p>WhatsApp: <a href="https://wa.me/5493815080432">+54 9 381 508-0432</a></p>
   </div>
 </footer>

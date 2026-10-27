@@ -282,6 +282,16 @@ dialog.sheet::backdrop{background:rgba(14,36,51,.55)}
 .chev{transition:transform .2s ease;width:20px;height:20px}
 .cart.open .chev{transform:rotate(180deg)}
 @media (min-width:700px){.intro h1{font-size:42px}.compare h2{font-size:38px}}
+@media (min-width:900px){
+  .incl{grid-template-columns:repeat(3,1fr)}
+  #partList{display:grid;grid-template-columns:1fr 1fr;column-gap:40px}
+  .how ol{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+  .how li{grid-template-columns:1fr;gap:10px}
+  .warranty{padding:34px 40px}
+  .warranty p{max-width:70ch;font-size:16.5px}
+  .faq details,.faq h2{max-width:820px}
+  .sec .lead{max-width:62ch}
+}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}html{scroll-behavior:auto}}
 </style>
 </head>
@@ -342,7 +352,7 @@ dialog.sheet::backdrop{background:rgba(14,36,51,.55)}
 </section>
 
 <section class="sec" aria-labelledby="t-incl">
-  <div class="wrap">
+  <div class="wide">
     <h2 id="t-incl" class="display">Llega completo y listo para volar</h2>
     <p class="lead">Todos los eFoils se entregan armables en minutos, sin herramientas.</p>
     <ul class="incl" id="inclList"></ul>
@@ -350,7 +360,7 @@ dialog.sheet::backdrop{background:rgba(14,36,51,.55)}
 </section>
 
 <section class="sec" id="repuestos" aria-labelledby="t-rep">
-  <div class="wrap">
+  <div class="wide">
     <p class="kicker">Para los que ya vuelan</p>
     <h2 id="t-rep" class="display">Repuestos y accesorios</h2>
     <p class="lead">Originales Lift, con envío e impuestos a Argentina incluidos.</p>
@@ -361,7 +371,7 @@ dialog.sheet::backdrop{background:rgba(14,36,51,.55)}
 </section>
 
 <section class="sec" id="garantia" aria-labelledby="t-gar">
-  <div class="wrap">
+  <div class="wide">
     <div class="warranty">
       <span class="badge">Garantía oficial Lift</span>
       <h2 id="t-gar" class="display">La garantía la da Lift, el fabricante</h2>
@@ -372,7 +382,7 @@ dialog.sheet::backdrop{background:rgba(14,36,51,.55)}
 </section>
 
 <section class="sec how" aria-labelledby="t-how">
-  <div class="wrap">
+  <div class="wide">
     <h2 id="t-how" class="display">Cómo comprar</h2>
     <ol>
       <li><div><b>Armá tu pedido</b><span>Elegí tu eFoil o tus repuestos y envialo por WhatsApp. El mínimo por pedido es USD 5.000; cualquier eFoil ya lo supera.</span></div></li>
@@ -384,7 +394,7 @@ dialog.sheet::backdrop{background:rgba(14,36,51,.55)}
 </section>
 
 <section class="sec faq" aria-labelledby="t-faq">
-  <div class="wrap">
+  <div class="wide">
     <h2 id="t-faq" class="display">Preguntas frecuentes</h2>
     <details><summary>¿El precio incluye envío e impuestos?</summary><p>Sí. Para Argentina, el precio publicado es el precio final en dólares, con envío e impuestos incluidos. Para Uruguay cotizamos el flete aparte.</p></details>
     <details><summary>¿Quién da la garantía?</summary><p>Lift Foils, el fabricante, de forma directa: 1 año según sus condiciones. Lift Argentina no es garante de los equipos.</p></details>
@@ -397,7 +407,7 @@ dialog.sheet::backdrop{background:rgba(14,36,51,.55)}
 </main>
 
 <footer>
-  <div class="wrap">
+  <div class="wide">
     <p>Línea 2027, precios vigentes a octubre de 2026. Especificaciones de referencia según Lift Foils; la configuración exacta se confirma al hacer el pedido.</p>
     <p>WhatsApp: <a href="https://wa.me/5493815080432">+54 9 381 508-0432</a> · Instagram: <a href="https://www.instagram.com/lift.argentina/" target="_blank" rel="noopener">@lift.argentina</a></p>
   </div>

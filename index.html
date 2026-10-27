@@ -54,12 +54,12 @@ button{cursor:pointer}
 .hero{position:relative;min-height:min(88svh,820px);display:flex;flex-direction:column;color:var(--blanco);overflow:hidden;background:var(--rio);text-align:center}
 .hero-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:48% 50%}
 .hero-back{display:none}
-@media (min-width:700px){.hero-bg{object-position:50% 62%}
+@media (min-width:700px){.hero{min-height:min(92svh,900px)}.hero-bg{object-position:50% 52%}
   .hero .hero-in{align-items:flex-start;max-width:var(--wide);padding-top:96px}
-  .hero .hero-in .logo{width:min(34vw,400px);margin:0}
-  .hero .hero-in .tagline{width:min(34vw,400px);margin:4px 0 0}
+  .hero .hero-in .logo{width:min(26vw,330px);margin:0}
+  .hero .hero-in .tagline{width:min(26vw,330px);margin:4px 0 0}
   .hero::after{background:linear-gradient(100deg,rgba(14,36,51,.45) 0%,rgba(14,36,51,.12) 38%,rgba(14,36,51,0) 60%),linear-gradient(to bottom,rgba(14,36,51,.25) 0%,rgba(14,36,51,0) 25%,rgba(14,36,51,0) 80%,rgba(14,36,51,.35) 100%)}}
-@media (max-width:699px){.hero{min-height:min(88svh,210vw)}.hero-bg{object-position:36% 50%}.hero .hero-in{align-items:flex-start;padding-top:66px}.hero .hero-in .logo{width:200px;margin:0}.hero .hero-in .tagline{width:auto;margin:4px 0 0 4px;padding:0;text-align:left;white-space:nowrap;font-size:11px}
+@media (max-width:699px){.hero{min-height:min(88svh,210vw)}.hero-bg{object-position:40% 50%}.hero .hero-in{align-items:flex-start;padding-top:66px}.hero .hero-in .logo{width:200px;margin:0}.hero .hero-in .tagline{width:auto;margin:4px 0 0 4px;padding:0;text-align:left;white-space:nowrap;font-size:11px}
   .hero::after{background:linear-gradient(to bottom,rgba(14,36,51,.45) 0%,rgba(14,36,51,.1) 26%,rgba(14,36,51,0) 40%,rgba(14,36,51,0) 80%,rgba(14,36,51,.4) 100%)}}
 .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,rgba(14,36,51,.18) 0%,rgba(14,36,51,0) 28%,rgba(14,36,51,0) 78%,rgba(14,36,51,.4) 100%)}
 .hero-in{position:relative;z-index:1;flex:1;display:flex;flex-direction:column;width:100%;padding-top:76px}
@@ -317,7 +317,7 @@ dialog.sheet::backdrop{background:rgba(14,36,51,.55)}
 </nav>
 
 <header class="hero" id="top">
-  <img class="hero-bg" src="hero-atardecer.jpg" alt="Rider volando con un eFoil Lift al atardecer" width="1200" height="800" fetchpriority="high">
+  <img class="hero-bg" src="hero-lago.jpg" alt="Tres riders volando con eFoils Lift en un lago de montaña" width="2000" height="2586" fetchpriority="high">
   <div class="hero-in wrap">
     <img class="logo" src="logo-blanco.png" alt="Lift Argentina" width="1600" height="822">
     <p class="tagline">Representantes oficiales de Lift en Argentina</p>

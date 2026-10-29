@@ -365,6 +365,18 @@ dialog.sheet::backdrop{background:rgba(14,36,51,.55)}
   .sec .lead{max-width:62ch}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}html{scroll-behavior:auto}}
+
+/* visor de fotos */
+.zoomable{cursor:zoom-in}
+dialog.lb{border:0;padding:0;margin:0;width:100vw;height:100svh;max-width:none;max-height:none;background:rgba(10,24,34,.96);color:#fff;overflow:hidden}
+dialog.lb::backdrop{background:rgba(10,24,34,.96)}
+.lb-stage{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;touch-action:none;overflow:hidden;background:radial-gradient(circle at 50% 45%,#ffffff 0,#EAF3F9 70%)}
+.lb-stage img{max-width:94vw;max-height:84svh;object-fit:contain;transform-origin:0 0;will-change:transform;user-select:none;-webkit-user-drag:none;cursor:zoom-in}
+.lb-stage.zoomed img{cursor:grab}
+.lb-stage.dragging img{cursor:grabbing}
+.lb-x{position:absolute;top:max(12px,env(safe-area-inset-top));right:12px;z-index:2;width:46px;height:46px;border-radius:50%;border:0;background:var(--rio);color:#fff;font-size:26px;line-height:1;display:grid;place-items:center;cursor:pointer;box-shadow:0 4px 14px rgba(14,36,51,.3)}
+.lb-cap{position:absolute;left:0;right:0;bottom:max(14px,env(safe-area-inset-bottom));z-index:2;text-align:center;font-size:13px;color:var(--tinta-suave);pointer-events:none;padding:0 16px}
+.lb-cap b{display:block;color:var(--rio);font-size:15px;margin-bottom:2px}
 </style>
 </head>
 <body>
@@ -529,6 +541,12 @@ dialog.sheet::backdrop{background:rgba(14,36,51,.55)}
     <p class="sheet-price" id="sheetPrice"></p>
     <button class="btn btn-sol" id="sheetAdd">Agregar al pedido</button>
   </div>
+</dialog>
+
+<dialog class="lb" id="lb" aria-label="Foto ampliada">
+  <div class="lb-stage" id="lbStage"><img id="lbImg" alt=""></div>
+  <button class="lb-x" id="lbClose" aria-label="Cerrar">×</button>
+  <p class="lb-cap"><b id="lbTitle"></b><span id="lbHint"></span></p>
 </dialog>
 
 <div class="cart" id="cart" hidden>
@@ -753,6 +771,82 @@ function closeDD(except){ ddBtns.forEach(b => { if (b === except) return; b.setA
 ddBtns.forEach(b => b.addEventListener("click", e => { e.stopPropagation(); const open = b.getAttribute("aria-expanded") !== "true"; closeDD(b); b.setAttribute("aria-expanded", open); document.getElementById(b.getAttribute("aria-controls")).classList.toggle("open", open); }));
 document.addEventListener("click", e => { if (!e.target.closest(".ddp") || e.target.closest(".ddp a")) closeDD(); });
 document.addEventListener("keydown", e => { if (e.key === "Escape") closeDD(); });
+
+// --- visor de fotos (ampliar y hacer zoom) ---
+(() => {
+  const ZSEL = ".cmp .mh .img img, .sp-ed .img img, #partList .th img:not(.mk), #sheetImg:not(.empty) img";
+  const lb = document.getElementById("lb"), stage = document.getElementById("lbStage"), img = document.getElementById("lbImg");
+  const touchDev = matchMedia("(pointer:coarse)").matches;
+  let sc = 1, tx = 0, ty = 0, base = null;
+  const pts = new Map(); let pinch = null, drag = null, moved = false, lastTap = 0;
+  const MAX = 4;
+  function apply(){ img.style.transform = `translate(${tx}px,${ty}px) scale(${sc})`; stage.classList.toggle("zoomed", sc > 1.01); }
+  function clamp(){
+    const r = base; if (!r) return;
+    const w = r.width * sc, h = r.height * sc, vw = innerWidth, vh = innerHeight;
+    // posición del borde superior izquierdo de la imagen = r.left + tx
+    const minX = Math.min(0, vw - w) - r.left, maxX = Math.max(0, vw - w) - r.left;
+    const minY = Math.min(0, vh - h) - r.top, maxY = Math.max(0, vh - h) - r.top;
+    if (w <= vw) tx = (vw - w) / 2 - r.left; else tx = Math.min(maxX, Math.max(minX, tx));
+    if (h <= vh) ty = (vh - h) / 2 - r.top; else ty = Math.min(maxY, Math.max(minY, ty));
+  }
+  function zoomAt(ns, cx, cy){
+    ns = Math.min(MAX, Math.max(1, ns));
+    // punto de la imagen bajo el cursor se mantiene fijo
+    const ix = (cx - base.left - tx) / sc, iy = (cy - base.top - ty) / sc;
+    sc = ns; tx = cx - base.left - ix * sc; ty = cy - base.top - iy * sc;
+    if (sc === 1) { tx = 0; ty = 0; } else clamp();
+    apply();
+  }
+  function reset(){ sc = 1; tx = 0; ty = 0; img.style.transition = ""; apply(); }
+  function open(src, title){
+    img.src = src.replace(/width=\d+/, "width=1800"); img.alt = title || "";
+    document.getElementById("lbTitle").textContent = title || "";
+    document.getElementById("lbHint").textContent = touchDev ? "Pellizcá o tocá dos veces para acercar" : "Hacé clic o usá la rueda del mouse para acercar";
+    reset(); lb.showModal();
+    const measure = () => { img.style.transform = "none"; base = img.getBoundingClientRect(); apply(); };
+    if (img.complete) measure(); else img.onload = measure;
+  }
+  addEventListener("resize", () => { if (lb.open) { reset(); img.style.transform = "none"; base = img.getBoundingClientRect(); apply(); } });
+  document.addEventListener("click", e => {
+    const t = e.target.closest("img"); if (!t || !t.matches(ZSEL)) return;
+    e.preventDefault(); e.stopPropagation();
+    open(t.currentSrc || t.src, t.alt);
+  }, true);
+  const markZoomable = () => document.querySelectorAll(ZSEL).forEach(i => i.classList.add("zoomable"));
+  new MutationObserver(markZoomable).observe(document.body, {childList: true, subtree: true}); markZoomable();
+  document.getElementById("lbClose").addEventListener("click", () => lb.close());
+  lb.addEventListener("cancel", () => {});
+  stage.addEventListener("wheel", e => { e.preventDefault(); if (!base) return; img.style.transition = ""; zoomAt(sc * Math.exp(-e.deltaY * 0.0022), e.clientX, e.clientY); }, {passive: false});
+  stage.addEventListener("pointerdown", e => {
+    stage.setPointerCapture(e.pointerId); pts.set(e.pointerId, {x: e.clientX, y: e.clientY}); moved = false; img.style.transition = "";
+    if (pts.size === 2) { const [a, b] = [...pts.values()]; pinch = {d: Math.hypot(a.x - b.x, a.y - b.y), s: sc}; drag = null; }
+    else if (pts.size === 1) drag = {x: e.clientX, y: e.clientY, tx, ty};
+  });
+  stage.addEventListener("pointermove", e => {
+    if (!pts.has(e.pointerId)) return; pts.set(e.pointerId, {x: e.clientX, y: e.clientY});
+    if (pinch && pts.size >= 2) { const [a, b] = [...pts.values()]; const d = Math.hypot(a.x - b.x, a.y - b.y); moved = true; zoomAt(pinch.s * d / pinch.d, (a.x + b.x) / 2, (a.y + b.y) / 2); }
+    else if (drag && sc > 1) { const dx = e.clientX - drag.x, dy = e.clientY - drag.y; if (Math.abs(dx) + Math.abs(dy) > 4) { moved = true; stage.classList.add("dragging"); } tx = drag.tx + dx; ty = drag.ty + dy; clamp(); apply(); }
+    else if (drag && Math.abs(e.clientX - drag.x) + Math.abs(e.clientY - drag.y) > 6) moved = true;
+  });
+  const up = e => {
+    if (!pts.has(e.pointerId)) return; pts.delete(e.pointerId); stage.classList.remove("dragging");
+    if (pts.size < 2) pinch = null;
+    if (pts.size === 1) { const p = [...pts.values()][0]; drag = {x: p.x, y: p.y, tx, ty}; return; }
+    drag = null;
+    if (moved || e.type === "pointercancel") return;
+    const ir = img.getBoundingClientRect(), onImg = e.clientX >= ir.left && e.clientX <= ir.right && e.clientY >= ir.top && e.clientY <= ir.bottom;
+    if (e.pointerType === "mouse") {
+      if (!onImg && sc === 1) { lb.close(); return; }
+      img.style.transition = "transform .25s ease"; zoomAt(sc > 1.01 ? 1 : 2.5, e.clientX, e.clientY);
+    } else {
+      const now = Date.now();
+      if (now - lastTap < 300) { lastTap = 0; img.style.transition = "transform .25s ease"; zoomAt(sc > 1.01 ? 1 : 2.5, e.clientX, e.clientY); }
+      else { lastTap = now; if (!onImg && sc === 1) setTimeout(() => { if (lastTap === now) lb.close(); }, 310); }
+    }
+  };
+  stage.addEventListener("pointerup", up); stage.addEventListener("pointercancel", up);
+})();
 </script>
 </body>
 </html>

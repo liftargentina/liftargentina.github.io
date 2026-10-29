@@ -178,6 +178,23 @@ button{cursor:pointer}
 .dots{display:flex;justify-content:center;gap:7px;margin:12px 0 0}
 .dots i{width:8px;height:8px;border-radius:50%;background:var(--espuma)}
 .dots i.on{background:var(--rio)}
+.mpick{display:none}
+@media (max-width:699px){
+  .mpick{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px}
+  .mpick::-webkit-scrollbar{display:none}
+  .mpick button{flex:1 0 auto;border:1.5px solid var(--espuma);background:var(--blanco);border-radius:999px;padding:8px 14px;font-weight:650;font-size:14px;white-space:nowrap;color:var(--rio)}
+  .mpick button[aria-pressed="true"]{background:var(--rio);border-color:var(--rio);color:var(--blanco)}
+  .scroller{scroll-snap-type:x mandatory}
+  .cmp .lab{display:none}
+  .cmp > div{scroll-snap-align:start;padding:12px 18px}
+  .cmp > div[data-l]::before{content:attr(data-l);display:block;width:100%;font-size:12px;font-weight:500;color:var(--tinta-suave);margin:0 0 3px}
+  .cmp > div[data-l]:not(.bar):not(.buy){flex-direction:row;justify-content:space-between;align-items:center;gap:14px;text-align:right}
+  .cmp > div[data-l]:not(.bar):not(.buy)::before{width:auto;flex:0 1 42%;text-align:left;font-size:13px;margin:0}
+  .cmp > div[data-l]:not(.bar):not(.buy) .val{flex:1 1 auto}
+  .cmp > div.buy[data-l]::before{display:none}
+  .cmp .bars{max-width:300px}
+  .dots{display:none !important}
+}
 .sp-ed{display:grid;gap:18px;background:var(--blanco);border-radius:22px;padding:22px;margin:30px 0 0}
 @media (min-width:860px){.sp-ed{grid-template-columns:1fr 1.1fr;align-items:center;padding:30px}}
 .sp-ed .img{border-radius:16px;background:radial-gradient(circle at 50% 45%,var(--blanco),var(--cielo) 75%);aspect-ratio:4/3;position:relative}
@@ -473,6 +490,8 @@ LINES.forEach(l => l.models.forEach(m => Object.keys(l.bats).forEach(b => {
 const cart = {}, colorSel = {};
 const selColor = (l, m) => m.colors.find(c => c.n === colorSel[`${l.id}-${m.key}`]) || m.colors[0];
 let dest = "Argentina", curLine = "lift5", bat = {}; const scrollMem = {};
+const MOB = window.matchMedia("(max-width:699px)");
+MOB.addEventListener("change", () => { for (const k in scrollMem) scrollMem[k] = 0; renderLine(); });
 LINES.forEach(l => bat[l.id] = l.defaultBat);
 
 // --- tarjetas de línea ---
@@ -501,8 +520,8 @@ function renderLine(){
     ["", m => { const c = selColor(l, m); return `<div class="img"><img src="${c.img}" alt="${esc(m.product + " " + m.size + " " + c.n)}" loading="lazy"></div>
       <div class="sw" role="radiogroup" aria-label="Color">${m.colors.map(x => `<button style="--c:${x.hex}" data-sw="${l.id}-${m.key}" data-cn="${esc(x.n)}" aria-pressed="${x.n === c.n}" title="${esc(x.n)}" aria-label="${esc(x.n)}"></button>`).join("")}</div>
       <p class="cn">${c.n}</p><h4>${m.size}</h4><p>${m.tag}</p><button class="more" data-model="${m.key}">Ver más</button>`; }, "mh"],
-    ["Nivel", m => bars(m.exp, LEVELS)],
-    ["Preferencia", m => bars(m.pref, PREFS)],
+    ["Nivel", m => bars(m.exp, LEVELS), "bar"],
+    ["Preferencia", m => bars(m.pref, PREFS), "bar"],
     ["Medidas", m => `<span class="val">${m.dims}</span>`],
     ["Volumen", m => `<span class="val">${m.vol}</span>`],
     [l.weightLabel, m => `<span class="val">${m.weight}</span>`],
@@ -525,8 +544,11 @@ function renderLine(){
       ${Object.entries(l.bats).map(([k, v]) => `<button data-bat="${k}" aria-pressed="${k === b}"><b>${v.name}</b><span>${v.time}${v.extra ? " · " + v.extra : ""}</span></button>`).join("")}
       ${l.batTip ? `<p class="tip">${l.batTip}</p>` : ""}
     </div>` : "";
-  const cols = `112px repeat(${n}, minmax(188px, 1fr))`, minw = 112 + n * 188;
-  const grid = rows.map(([lab, fn, cls]) => `<div class="lab">${lab}</div>` + l.models.map(m => `<div class="${cls || ""}">${fn(m)}</div>`).join("")).join("");
+  const mob = MOB.matches;
+  const cols = mob ? `repeat(${n}, 1fr)` : `112px repeat(${n}, minmax(188px, 1fr))`, minw = 112 + n * 188;
+  const gw = mob ? `${n * 100}%` : `max(100%, ${minw}px)`;
+  const grid = rows.map(([lab, fn, cls]) => `<div class="lab">${lab}</div>` + l.models.map(m => `<div class="${cls || ""}"${lab ? ` data-l="${esc(lab)}"` : ""}>${fn(m)}</div>`).join("")).join("");
+  const mpick = n > 1 ? `<div class="mpick" role="group" aria-label="Elegí la medida">${l.models.map((m, i) => `<button data-mpick="${i}" aria-pressed="${i === 0}">${m.size}</button>`).join("")}</div>` : "";
   const ksp = l.ksp ? `<div class="ksp">${l.ksp.map(([ic, t]) => `<div><img src="${ic}" alt="" loading="lazy">${t}</div>`).join("")}</div>` : "";
   const sp = l.special ? `<div class="sp-ed">
       <div class="img"><img src="${l.special.img}" alt="${esc(l.special.title)}" loading="lazy"></div>
@@ -540,7 +562,8 @@ function renderLine(){
     <div class="lhero"><span class="pill">${l.name}</span><h3 class="display">${l.headline}</h3><p class="sub">${l.sub}</p>${ksp}</div>
     <div class="sf-head"><h3 class="display">${l.sfTitle}</h3><p>${l.sfIntro}</p></div>
     ${batUI}
-    <div class="scroller" id="scroller"><div class="cmp" style="grid-template-columns:${cols};width:max(100%, ${minw}px)">${grid}</div></div>
+    ${mpick}
+    <div class="scroller" id="scroller"><div class="cmp" style="grid-template-columns:${cols};width:${gw}">${grid}</div></div>
     <div class="dots" id="dots" aria-hidden="true">${l.models.map((m, i) => `<i class="${i ? "" : "on"}"></i>`).join("")}</div>
     ${l.note ? `<p class="foot-note">${l.note}</p>` : ""}
     ${l.extra ? `<p class="extra-size">${l.extra}</p>` : ""}
@@ -548,7 +571,8 @@ function renderLine(){
   const sc = document.getElementById("scroller"), dots = [...document.querySelectorAll("#dots i")];
   sc.scrollLeft = scrollMem[l.id] || 0;
   const syncDots = () => { scrollMem[l.id] = sc.scrollLeft; const max = sc.scrollWidth - sc.clientWidth; document.getElementById("dots").style.display = max > 4 ? "" : "none";
-    const i = max > 0 ? Math.round(sc.scrollLeft / max * (n - 1)) : 0; dots.forEach((d, k) => d.classList.toggle("on", k === i)); };
+    const i = max > 0 ? Math.round(sc.scrollLeft / max * (n - 1)) : 0; dots.forEach((d, k) => d.classList.toggle("on", k === i));
+    document.querySelectorAll("#lineView .mpick button").forEach((bt, k) => bt.setAttribute("aria-pressed", k === i)); };
   sc.addEventListener("scroll", syncDots, {passive: true}); syncDots();
 }
 
@@ -627,6 +651,7 @@ document.addEventListener("click", e => {
   if (d.goline) { e.preventDefault(); curLine = d.goline; renderTabs(); renderLine(); const tgt = t.classList.contains("line-card") ? document.querySelector("#lineView .sf-head") : document.getElementById("comparar"); tgt.scrollIntoView({behavior: "smooth", block: "start"}); }
   else if (d.line) { curLine = d.line; renderTabs(); renderLine(); }
   else if (d.bat) { bat[curLine] = d.bat; renderLine(); }
+  else if (d.mpick) { const sc = document.getElementById("scroller"); sc.scrollTo({left: sc.clientWidth * +d.mpick, behavior: "smooth"}); }
   else if (d.pg) { curPart = d.pg; renderParts(); }
   else if (d.add) { if (cart[d.add]) { document.getElementById("cart").classList.add("open"); document.getElementById("cartToggle").setAttribute("aria-expanded", true); } else change(d.add, 1); }
   else if (d.sw) { colorSel[d.sw] = d.cn; renderLine(); update(); }

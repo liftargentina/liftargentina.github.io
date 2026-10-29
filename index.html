@@ -33,7 +33,7 @@
   --col:560px;--wide:1120px;
 }
 *{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:64px}
 body{margin:0;background:var(--cielo);color:var(--rio);font-family:"Archivo",system-ui,sans-serif;font-variation-settings:"wdth" 100;font-size:17px;line-height:1.5;font-feature-settings:"tnum" 1}
 img{max-width:100%;display:block}
 a{color:inherit}
@@ -155,9 +155,30 @@ button{cursor:pointer}
 .nav-in .home{flex:none;display:block}
 .nav-in .home img{height:30px;width:auto}
 .nav:not(.solid) .home{opacity:0;pointer-events:none}
-.nav ul{display:flex;gap:4px;list-style:none;margin:0 0 0 auto;padding:0;overflow-x:auto;scrollbar-width:none}
-.nav ul::-webkit-scrollbar{display:none}
-.nav a{display:block;padding:8px 8px;border-radius:999px;text-decoration:none;font-weight:650;font-size:14.5px;white-space:nowrap}
+.nav ul{display:flex;gap:6px;list-style:none;margin:0 0 0 auto;padding:0}
+.nav a{text-decoration:none}
+.dd{position:relative}
+.ddb{display:flex;align-items:center;gap:6px;border:1.5px solid transparent;background:transparent;color:inherit;padding:7px 14px;border-radius:999px;font:inherit;font-weight:650;font-size:15px;white-space:nowrap;cursor:pointer}
+.ddb svg{width:11px;height:11px;transition:transform .2s ease}
+.ddb[aria-expanded="true"]{border-color:currentColor}
+.ddb[aria-expanded="true"] svg{transform:rotate(180deg)}
+.ddb .s{display:none}
+.ddp{position:absolute;top:calc(100% + 10px);right:0;width:340px;background:var(--blanco);color:var(--rio);border-radius:18px;box-shadow:0 14px 40px rgba(14,36,51,.22);padding:8px;display:none}
+.ddp.open{display:block}
+.ddp a{display:flex;align-items:center;gap:14px;padding:10px 12px;border-radius:12px}
+.ddp a:hover,.ddp a:focus-visible{background:var(--cielo)}
+.ddp .ic{flex:none;width:64px;height:48px;border-radius:10px;background:radial-gradient(circle at 50% 45%,var(--blanco),var(--cielo) 75%);display:grid;place-items:center}
+.ddp .ic img{max-width:90%;max-height:90%;object-fit:contain}
+.ddp .ic svg{width:22px;height:22px;color:var(--rio)}
+.ddp b{display:block;font-size:16px;font-weight:700;font-variation-settings:"wdth" 110;line-height:1.2}
+.ddp small{display:block;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--tinta-suave);margin-top:2px}
+.ddp hr{border:0;border-top:1px solid var(--linea);margin:6px 10px}
+@media (max-width:699px){
+  .ddb{padding:7px 10px;font-size:14px;gap:4px}
+  .nav ul{gap:2px}
+  .ddb .l{display:none}.ddb .s{display:inline}
+  .ddp{position:fixed;top:62px;left:12px;right:12px;width:auto;max-height:calc(100svh - 80px);overflow:auto}
+}
 .switch{top:56px}
 /* Encabezado de línea (como la portada de cada modelo en Lift) */
 .lhero{background:var(--rio);color:var(--blanco);border-radius:22px;padding:28px 22px;margin:8px 0 26px}
@@ -350,12 +371,26 @@ dialog.sheet::backdrop{background:rgba(14,36,51,.55)}
   <div class="wide nav-in">
     <a class="home" href="#top" aria-label="Inicio"><img id="navLogo" src="logo-blanco.png" alt="Lift Argentina"></a>
     <ul>
-      <li><a href="#comparar" data-goline="lift5f">LIFT5 F</a></li>
-      <li><a href="#comparar" data-goline="lift5">LIFT5</a></li>
-      <li><a href="#comparar" data-goline="liftx">LIFTX</a></li>
-      <li><a href="#repuestos">Repuestos</a></li>
-      <li><a href="#garantia">Garantía</a></li>
-      <li><a href="socios.html">Socios</a></li>
+      <li class="dd">
+        <button class="ddb" aria-expanded="false" aria-controls="dd-prod">Modelos y repuestos<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="ddp" id="dd-prod">
+          <a href="#comparar" data-goline="lift5f"><span class="ic"><img src="fotos/lift5-f.webp" alt=""></span><span><b>LIFT5 F</b><small>El mejor para empezar</small></span></a>
+          <a href="#comparar" data-goline="lift5"><span class="ic"><img src="fotos/lift5.webp" alt=""></span><span><b>LIFT5</b><small>El insignia</small></span></a>
+          <a href="#comparar" data-goline="liftx"><span class="ic"><img src="fotos/liftx.webp" alt=""></span><span><b>LIFTX</b><small>El más liviano</small></span></a>
+          <hr>
+          <a href="#repuestos"><span class="ic"><img src="fotos/bateria-gen5.webp" alt=""></span><span><b>Repuestos y accesorios</b><small>Baterías, alas, cargadores</small></span></a>
+        </div>
+      </li>
+      <li class="dd">
+        <button class="ddb" aria-expanded="false" aria-controls="dd-info"><span class="l">Información</span><span class="s">Info</span><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="ddp" id="dd-info">
+          <a href="#como-comprar"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.4 11h10.2L20 7H6.2"/><circle cx="9" cy="19" r="1.5"/><circle cx="17" cy="19" r="1.5"/></svg></span><span><b>Cómo comprar</b><small>Pedido, seña y entrega</small></span></a>
+          <a href="#garantia"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg></span><span><b>Garantía</b><small>Oficial de Lift</small></span></a>
+          <a href="#preguntas"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.3-1 .9-1 1.7"/><path d="M12 17h.01"/></svg></span><span><b>Preguntas frecuentes</b><small>Envío, pago y baterías</small></span></a>
+          <hr>
+          <a href="socios.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M16 4a3 3 0 0 1 0 6M18 14c2 .7 3 2.6 3 6"/></svg></span><span><b>Socios comerciales</b><small>Escuelas y tiendas</small></span></a>
+        </div>
+      </li>
     </ul>
   </div>
 </nav>
@@ -430,7 +465,7 @@ dialog.sheet::backdrop{background:rgba(14,36,51,.55)}
   </div>
 </section>
 
-<section class="sec how" aria-labelledby="t-how">
+<section class="sec how" id="como-comprar" aria-labelledby="t-how">
   <div class="wide">
     <h2 id="t-how" class="display">Cómo comprar</h2>
     <ol>
@@ -442,7 +477,7 @@ dialog.sheet::backdrop{background:rgba(14,36,51,.55)}
   </div>
 </section>
 
-<section class="sec faq" aria-labelledby="t-faq">
+<section class="sec faq" id="preguntas" aria-labelledby="t-faq">
   <div class="wide">
     <h2 id="t-faq" class="display">Preguntas frecuentes</h2>
     <details><summary>¿El precio incluye envío e impuestos?</summary><p>Sí. Para Argentina, el precio publicado es el precio final en dólares, con envío e impuestos incluidos. Para Uruguay cotizamos el flete aparte.</p></details>
@@ -692,6 +727,12 @@ renderTabs(); renderLine(); renderParts();
 const navEl = document.querySelector(".nav"), navLogo = document.getElementById("navLogo"), heroEl = document.querySelector(".hero");
 function syncNav(){ const solid = scrollY > heroEl.offsetHeight - 70; navEl.classList.toggle("solid", solid); navLogo.src = solid ? "logo-azul.png" : "logo-blanco.png"; }
 addEventListener("scroll", syncNav, {passive: true}); syncNav();
+// --- menús desplegables ---
+const ddBtns = [...document.querySelectorAll(".ddb")];
+function closeDD(except){ ddBtns.forEach(b => { if (b === except) return; b.setAttribute("aria-expanded", "false"); document.getElementById(b.getAttribute("aria-controls")).classList.remove("open"); }); }
+ddBtns.forEach(b => b.addEventListener("click", e => { e.stopPropagation(); const open = b.getAttribute("aria-expanded") !== "true"; closeDD(b); b.setAttribute("aria-expanded", open); document.getElementById(b.getAttribute("aria-controls")).classList.toggle("open", open); }));
+document.addEventListener("click", e => { if (!e.target.closest(".ddp") || e.target.closest(".ddp a")) closeDD(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeDD(); });
 </script>
 </body>
 </html>

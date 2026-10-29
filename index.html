@@ -162,7 +162,9 @@ button{cursor:pointer}
 .ddb svg{width:11px;height:11px;transition:transform .2s ease}
 .ddb[aria-expanded="true"]{border-color:currentColor}
 .ddb[aria-expanded="true"] svg{transform:rotate(180deg)}
-.ddb .s{display:none}
+.nav li.mb{display:none}
+.ddh{margin:4px 12px 2px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal)}
+@media (max-width:1060px) and (min-width:700px){.ddb{padding:7px 9px;font-size:14px}.nav ul{gap:0}}
 .ddp{position:absolute;top:calc(100% + 10px);right:0;width:340px;background:var(--blanco);color:var(--rio);border-radius:18px;box-shadow:0 14px 40px rgba(14,36,51,.22);padding:8px;display:none}
 .ddp.open{display:block}
 .ddp a{display:flex;align-items:center;gap:14px;padding:10px 12px;border-radius:12px}
@@ -176,7 +178,7 @@ button{cursor:pointer}
 @media (max-width:699px){
   .ddb{padding:7px 10px;font-size:14px;gap:4px}
   .nav ul{gap:2px}
-  .ddb .l{display:none}.ddb .s{display:inline}
+  .nav li.dk{display:none}.nav li.mb{display:block}
   .ddp{position:fixed;top:62px;left:12px;right:12px;width:auto;max-height:calc(100svh - 80px);overflow:auto}
 }
 .switch{top:56px}
@@ -381,14 +383,32 @@ dialog.sheet::backdrop{background:rgba(14,36,51,.55)}
           <a href="#repuestos"><span class="ic"><img src="fotos/bateria-gen5.webp" alt=""></span><span><b>Repuestos y accesorios</b><small>Baterías, alas, cargadores</small></span></a>
         </div>
       </li>
-      <li class="dd">
-        <button class="ddb" aria-expanded="false" aria-controls="dd-info"><span class="l">Información</span><span class="s">Info</span><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <li class="dk"><a class="ddb" href="#garantia">Garantía</a></li>
+      <li class="dd dk">
+        <button class="ddb" aria-expanded="false" aria-controls="dd-contact">Info de contacto<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="ddp" id="dd-contact">
+          <a href="https://wa.me/5493815080432" target="_blank" rel="noopener"><span class="ic"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2l-.4-.2Z"/></svg></span><span><b>WhatsApp</b><small>+54 9 381 508-0432</small></span></a>
+          <a href="https://www.instagram.com/lift.argentina/" target="_blank" rel="noopener"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".6" fill="currentColor"/></svg></span><span><b>Instagram</b><small>@lift.argentina</small></span></a>
+        </div>
+      </li>
+      <li class="dk"><a class="ddb" href="socios.html">Quiero asociarme</a></li>
+      <li class="dd dk">
+        <button class="ddb" aria-expanded="false" aria-controls="dd-more">Más info<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="ddp" id="dd-more">
+          <a href="#como-comprar"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.4 11h10.2L20 7H6.2"/><circle cx="9" cy="19" r="1.5"/><circle cx="17" cy="19" r="1.5"/></svg></span><span><b>Cómo comprar</b><small>Pedido, seña y entrega</small></span></a>
+          <a href="#preguntas"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.3-1 .9-1 1.7"/><path d="M12 17h.01"/></svg></span><span><b>Preguntas frecuentes</b><small>Envío, pago y baterías</small></span></a>
+        </div>
+      </li>
+      <li class="dd mb">
+        <button class="ddb" aria-expanded="false" aria-controls="dd-info">Info<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
         <div class="ddp" id="dd-info">
           <a href="#como-comprar"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2l2.4 11h10.2L20 7H6.2"/><circle cx="9" cy="19" r="1.5"/><circle cx="17" cy="19" r="1.5"/></svg></span><span><b>Cómo comprar</b><small>Pedido, seña y entrega</small></span></a>
           <a href="#garantia"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg></span><span><b>Garantía</b><small>Oficial de Lift</small></span></a>
           <a href="#preguntas"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.3-1 .9-1 1.7"/><path d="M12 17h.01"/></svg></span><span><b>Preguntas frecuentes</b><small>Envío, pago y baterías</small></span></a>
-          <hr>
           <a href="socios.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M16 4a3 3 0 0 1 0 6M18 14c2 .7 3 2.6 3 6"/></svg></span><span><b>Socios comerciales</b><small>Escuelas y tiendas</small></span></a>
+          <hr><p class="ddh">Contacto</p>
+          <a href="https://wa.me/5493815080432" target="_blank" rel="noopener"><span class="ic"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2l-.4-.2Z"/></svg></span><span><b>WhatsApp</b><small>+54 9 381 508-0432</small></span></a>
+          <a href="https://www.instagram.com/lift.argentina/" target="_blank" rel="noopener"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".6" fill="currentColor"/></svg></span><span><b>Instagram</b><small>@lift.argentina</small></span></a>
         </div>
       </li>
     </ul>
@@ -728,7 +748,7 @@ const navEl = document.querySelector(".nav"), navLogo = document.getElementById(
 function syncNav(){ const solid = scrollY > heroEl.offsetHeight - 70; navEl.classList.toggle("solid", solid); navLogo.src = solid ? "logo-azul.png" : "logo-blanco.png"; }
 addEventListener("scroll", syncNav, {passive: true}); syncNav();
 // --- menús desplegables ---
-const ddBtns = [...document.querySelectorAll(".ddb")];
+const ddBtns = [...document.querySelectorAll("button.ddb")];
 function closeDD(except){ ddBtns.forEach(b => { if (b === except) return; b.setAttribute("aria-expanded", "false"); document.getElementById(b.getAttribute("aria-controls")).classList.remove("open"); }); }
 ddBtns.forEach(b => b.addEventListener("click", e => { e.stopPropagation(); const open = b.getAttribute("aria-expanded") !== "true"; closeDD(b); b.setAttribute("aria-expanded", open); document.getElementById(b.getAttribute("aria-controls")).classList.toggle("open", open); }));
 document.addEventListener("click", e => { if (!e.target.closest(".ddp") || e.target.closest(".ddp a")) closeDD(); });

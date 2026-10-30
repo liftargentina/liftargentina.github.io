@@ -392,6 +392,15 @@ dialog.lb::backdrop{background:rgba(10,24,34,.96)}
 .lb-x{position:absolute;top:max(12px,env(safe-area-inset-top));right:12px;z-index:2;width:46px;height:46px;border-radius:50%;border:0;background:var(--rio);color:#fff;font-size:26px;line-height:1;display:grid;place-items:center;cursor:pointer;box-shadow:0 4px 14px rgba(14,36,51,.3)}
 .lb-cap{position:absolute;left:0;right:0;bottom:max(14px,env(safe-area-inset-bottom));z-index:2;text-align:center;font-size:13px;color:var(--tinta-suave);pointer-events:none;padding:0 16px}
 .lb-cap b{display:block;color:var(--rio);font-size:15px;margin-bottom:2px}
+/* --- promo de pretemporada (se apaga sola: ver PROMO en el script) --- */
+.promo-hero{align-self:flex-start;display:inline-flex;flex-direction:column;gap:1px;margin:18px 0 0 4px;padding:10px 16px;border-radius:14px;background:var(--sol);color:var(--rio);text-decoration:none;box-shadow:0 6px 20px rgba(14,36,51,.28);line-height:1.2}
+.promo-hero b{font-size:17px;font-weight:800;font-variation-settings:"wdth" 110}
+.promo-hero span{font-size:12.5px;font-weight:550}
+.line-card{position:relative}
+.promo-tag{position:absolute;top:16px;right:16px;background:var(--sol);color:var(--rio);font-size:12px;font-weight:800;padding:5px 10px;border-radius:999px;letter-spacing:.02em}
+.was{display:block;font-size:13px;font-weight:450;text-decoration:line-through;opacity:.7;font-variation-settings:"wdth" 100}
+.cmp .buy .p .off,.sheet-price .off{display:inline-block;margin:3px 0 0 6px;background:var(--sol);color:var(--rio);font-size:11px;font-weight:800;padding:2px 7px;border-radius:999px}
+@media (max-width:699px){.promo-hero{margin-top:14px;padding:8px 13px}.promo-hero b{font-size:15px}.promo-hero span{font-size:11.5px}.cmp .buy .p .was{font-size:11px}}
 </style>
 </head>
 <body>
@@ -583,6 +592,20 @@ const PARTS = [{"id": "r0", "group": "Baterías y carga", "name": "Batería Gen5
 const INCL = ["Tabla, mástil con motor, alas y hélice o jet, según el modelo", "Batería y cargador Lift", "Control de mano inalámbrico Lift", "Fundas y bolsos de transporte, según el modelo", "Garantía oficial de Lift Foils, gestionada directamente con el fabricante"];
 const WA = "5493815080432";
 const MIN = 5000;
+// --- PROMO DE PRETEMPORADA ---
+// Se desactiva sola cuando pasa "end": vuelven los precios normales y desaparecen los carteles.
+// "skip": modelos sin descuento (formato línea-modelo).
+const PROMO = {pct: 5, end: new Date("2026-11-17T00:00:00-03:00"), hasta: "16/11", lines: ["lift5f", "lift5"], skip: ["lift5-laird"]};
+const PROMO_ON = Date.now() < PROMO.end.getTime();
+if (PROMO_ON) LINES.forEach(l => {
+  if (!PROMO.lines.includes(l.id)) return;
+  l.models.forEach(m => {
+    if (PROMO.skip.includes(`${l.id}-${m.key}`)) return;
+    m.list = {...m.prices}; l.promo = true;
+    for (const b in m.prices) m.prices[b] = Math.round(m.prices[b] * (1 - PROMO.pct / 100));
+  });
+});
+const OFF = `<span class="off">${PROMO.pct} % OFF</span>`;
 const fmt = n => "USD " + Math.round(n).toLocaleString("es-AR");
 const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const CHECK = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>`;
@@ -592,7 +615,7 @@ const ITEMS = {};
 PARTS.forEach(p => ITEMS[p.id] = p);
 const itemId = (line, m, bat) => `${line.id}-${m.key}-${bat}`;
 LINES.forEach(l => l.models.forEach(m => Object.keys(l.bats).forEach(b => {
-  ITEMS[itemId(l, m, b)] = {name: `${m.product} ${m.size} · ${l.bats[b].name}`, price: m.prices[b], mk: `${l.id}-${m.key}`};
+  ITEMS[itemId(l, m, b)] = {name: `${m.product} ${m.size} · ${l.bats[b].name}`, price: m.prices[b], list: m.list ? m.list[b] : 0, mk: `${l.id}-${m.key}`};
 })));
 
 const cart = {}, colorSel = {};
@@ -605,13 +628,14 @@ LINES.forEach(l => bat[l.id] = l.defaultBat);
 // --- tarjetas de línea ---
 document.getElementById("lineCards").innerHTML = LINES.map(l => {
   const from = Math.min(...l.models.flatMap(m => Object.values(m.prices)));
-  return `<button class="line-card" data-goline="${l.id}">
+  const fromList = l.promo ? Math.min(...l.models.flatMap(m => Object.values(m.list || m.prices))) : 0;
+  return `<button class="line-card" data-goline="${l.id}">${l.promo ? `<span class="promo-tag">${PROMO.pct} % OFF</span>` : ""}
     <p class="kicker">${l.kicker}</p>
     <h3 class="display">${l.name}</h3>
     <p class="lc-sub">${l.title}</p>
     <div class="lc-img"><img src="${l.img}" alt="eFoil ${l.name}" loading="lazy"></div>
     <ul class="facts">${l.facts.map(([k,v]) => `<li><span>${k}</span><b>${v}</b></li>`).join("")}</ul>
-    <div class="lc-foot"><div class="from">Desde<b>${fmt(from)}</b></div><span class="lc-btn">Comparar ${l.models.length} tamaños</span></div>
+    <div class="lc-foot"><div class="from">Desde${fromList > from ? `<span class="was">${fmt(fromList)}</span>` : ""}<b>${fmt(from)}</b></div><span class="lc-btn">Comparar ${l.models.length} tamaños</span></div>
   </button>`;
 }).join("");
 
@@ -642,7 +666,7 @@ function renderLine(){
     ["Control|Control", m => `<span class="val">${l.control}</span>`, "hm"],
     ["Precio final|Precio", m => {
       const id = itemId(l, m, b), c = selColor(l, m);
-      return `<div class="p">${fmt(m.prices[b])}<small>Envío e impuestos incluidos</small></div>
+      return `<div class="p">${m.list ? `<span class="was">${fmt(m.list[b])}</span>` : ""}${fmt(m.prices[b])}${m.list ? OFF : ""}<small>Envío e impuestos incluidos</small></div>
         <p class="cpick" data-mk="${l.id}-${m.key}">Color: <b>${c.n}</b></p>
         <button class="btn btn-sol btn-add" data-add="${id}" aria-pressed="${!!cart[id]}">${cart[id] ? `En tu pedido (${cart[id]})` : "Agregar al pedido"}</button>`;
     }, "buy"]
@@ -715,7 +739,7 @@ function openSheet(id, title){
   document.getElementById("sheetDesc").textContent = p.desc || "";
   const specs = [...(p.specs || []), ["Envío e impuestos a Argentina", "Incluidos"]];
   document.getElementById("sheetSpecs").innerHTML = specs.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join("");
-  document.getElementById("sheetPrice").innerHTML = `${fmt(p.price)}<small>Precio final en dólares</small>`;
+  document.getElementById("sheetPrice").innerHTML = `${p.list ? `<span class="was">${fmt(p.list)}</span>` : ""}${fmt(p.price)}${p.list ? " " + OFF : ""}<small>Precio final en dólares</small>`;
   const add = document.getElementById("sheetAdd");
   add.dataset.id = id; add.textContent = cart[id] ? `En tu pedido (${cart[id]})` : "Agregar al pedido";
   document.getElementById("sheet").showModal();
@@ -787,7 +811,7 @@ function change(id, d){ cart[id] = (cart[id] || 0) + d; if (cart[id] <= 0) delet
 function send(){
   const t = total();
   const lines = Object.entries(cart).map(([id, q]) => `• ${q} × ${label(id)} — ${fmt(ITEMS[id].price * q)}`);
-  const msg = ["¡Hola Lift Argentina! Quiero hacer este pedido:", "", ...lines, "", `Total: ${fmt(t)}`, `Seña 50 %: ${fmt(t / 2)}`, `Envío a: ${dest}`].join("\n");
+  const msg = ["¡Hola Lift Argentina! Quiero hacer este pedido:", "", ...lines, "", `Total: ${fmt(t)}`, `Seña 50 %: ${fmt(t / 2)}`, `Envío a: ${dest}`, ...(Object.keys(cart).some(id => ITEMS[id].list) ? ["", `Promo de pretemporada ${PROMO.pct} % OFF aplicada (válida hasta el ${PROMO.hasta}).`] : [])].join("\n");
   window.open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`, "_blank", "noopener");
 }
 
@@ -822,6 +846,8 @@ document.addEventListener("change", e => {
 });
 document.getElementById("sheet").addEventListener("click", e => { if (e.target.id === "sheet") e.target.close(); });
 
+if (PROMO_ON) document.querySelector(".hero-in").insertAdjacentHTML("beforeend",
+  `<a class="promo-hero" href="#comparar" data-goline="lift5f"><b>Promo de pretemporada · ${PROMO.pct} % OFF</b><span>En LIFT5 F y LIFT5 · hasta el ${PROMO.hasta}</span></a>`);
 renderTabs(); renderLine(); renderParts();
 // en reposo, precarga la foto principal de cada modelo para que cambiar de línea sea instantáneo
 addEventListener("load", () => { if (navigator.connection && navigator.connection.saveData) return; (window.requestIdleCallback || (f => setTimeout(f, 1500)))(() => LINES.forEach(l => preloadLine(l, false))); });

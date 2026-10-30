@@ -397,14 +397,22 @@ dialog.lb::backdrop{background:rgba(10,24,34,.96)}
 .promo-hero b{font-size:17px;font-weight:800;font-variation-settings:"wdth" 110}
 .promo-hero span{font-size:12.5px;font-weight:550}
 .line-card{position:relative}
-.promo-tag{position:absolute;top:16px;right:16px;background:var(--sol);color:var(--rio);font-size:12px;font-weight:800;padding:5px 10px;border-radius:999px;letter-spacing:.02em}
+.promo-tag{position:absolute;top:16px;right:16px;display:flex;flex-direction:column;align-items:flex-end;background:var(--sol);color:var(--rio);padding:6px 12px;border-radius:12px;line-height:1.15;text-align:right}
+.promo-tag b{font-size:14px;font-weight:800;font-variation-settings:"wdth" 108}
+.promo-tag em{font-style:normal;font-size:10.5px;font-weight:650;opacity:.8}
+.save{display:inline-flex;align-items:baseline;gap:6px;background:var(--sol);color:var(--rio);border-radius:999px;padding:3px 10px;line-height:1.25;font-variation-settings:"wdth" 100}
+.save b{font-size:13px;font-weight:800}
+.save em{font-style:normal;font-size:10.5px;font-weight:650;opacity:.75}
+.cmp .buy .p .save{display:flex;width:max-content;max-width:100%;margin:5px auto 3px;height:23px;align-items:center}
+.cmp .buy .p .save.ph{visibility:hidden;display:flex;width:1px}
+.sheet-price .save{margin:6px 0 2px;display:flex;width:max-content}
 .was{display:block;font-size:13px;font-weight:450;text-decoration:line-through;opacity:.7;font-variation-settings:"wdth" 100}
 .cmp .buy .p .pre{display:flex;justify-content:center;align-items:center;gap:7px;height:22px;margin:0 0 3px;font-size:13.5px;line-height:1.3}
 .cmp .buy .p .pre .was{display:inline;font-size:13.5px}
 .cmp .buy .btn{margin-top:auto}
 .cmp .buy .p .off{display:inline-block;margin:0;background:var(--sol);color:var(--rio);font-size:11px;font-weight:800;padding:2px 7px;border-radius:999px;font-variation-settings:"wdth" 100;line-height:1.3}
 .sheet-price .off{display:inline-block;margin:3px 0 0 6px;background:var(--sol);color:var(--rio);font-size:11px;font-weight:800;padding:2px 7px;border-radius:999px}
-@media (max-width:699px){.promo-hero{margin-top:14px;padding:8px 13px}.promo-hero b{font-size:15px}.promo-hero span{font-size:11.5px}.cmp .buy .p .pre{flex-direction:column;gap:2px;height:36px;font-size:11.5px}.cmp .buy .p .pre .was{font-size:11.5px}.cmp .buy .p .off{font-size:10px;padding:1px 6px}}
+@media (max-width:699px){.cmp .buy .p .save{flex-direction:column;align-items:center;gap:0;height:34px;border-radius:12px;padding:3px 8px}.cmp .buy .p .save b{font-size:11.5px}.cmp .buy .p .save em{font-size:9.5px}.promo-hero{margin-top:14px;padding:8px 13px}.promo-hero b{font-size:15px}.promo-hero span{font-size:11.5px}.cmp .buy .p .pre{height:18px;font-size:11.5px}.cmp .buy .p .pre .was{font-size:11.5px}.cmp .buy .p .off{font-size:10px;padding:1px 6px}}
 </style>
 </head>
 <body>
@@ -610,6 +618,9 @@ if (PROMO_ON) LINES.forEach(l => {
   });
 });
 const OFF = `<span class="off">${PROMO.pct} % OFF</span>`;
+// ahorro en dólares como dato principal; el % como dato secundario
+const SAVE = (list, price) => `<span class="save"><b>Ahorrás ${fmt(list - price)}</b><em>${PROMO.pct} % OFF</em></span>`;
+const maxSave = l => Math.max(0, ...l.models.flatMap(m => m.list ? Object.keys(m.prices).map(k => m.list[k] - m.prices[k]) : []));
 const fmt = n => "USD " + Math.round(n).toLocaleString("es-AR");
 const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const CHECK = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>`;
@@ -633,7 +644,7 @@ LINES.forEach(l => bat[l.id] = l.defaultBat);
 document.getElementById("lineCards").innerHTML = LINES.map(l => {
   const from = Math.min(...l.models.flatMap(m => Object.values(m.prices)));
   const fromList = l.promo ? Math.min(...l.models.flatMap(m => Object.values(m.list || m.prices))) : 0;
-  return `<button class="line-card" data-goline="${l.id}">${l.promo ? `<span class="promo-tag">${PROMO.pct} % OFF</span>` : ""}
+  return `<button class="line-card" data-goline="${l.id}">${l.promo ? `<span class="promo-tag"><b>Ahorrás ${fmt(maxSave(l))}</b><em>${PROMO.pct} % OFF</em></span>` : ""}
     <p class="kicker">${l.kicker}</p>
     <h3 class="display">${l.name}</h3>
     <p class="lc-sub">${l.title}</p>
@@ -670,8 +681,10 @@ function renderLine(){
     ["Control|Control", m => `<span class="val">${l.control}</span>`, "hm"],
     ["Precio final|Precio", m => {
       const id = itemId(l, m, b), c = selColor(l, m);
-      const pre = m.list ? `<span class="pre"><span class="was">${fmt(m.list[b])}</span>${OFF}</span>` : (l.models.some(x => x.list) ? `<span class="pre" aria-hidden="true">&nbsp;</span>` : "");
-      return `<div class="p">${pre}${fmt(m.prices[b])}<small>Envío e impuestos incluidos</small></div>
+      const anyP = l.models.some(x => x.list);
+      const pre = m.list ? `<span class="pre"><span class="was">${fmt(m.list[b])}</span></span>` : (anyP ? `<span class="pre" aria-hidden="true">&nbsp;</span>` : "");
+      const sv = m.list ? SAVE(m.list[b], m.prices[b]) : (anyP ? `<span class="save ph" aria-hidden="true"></span>` : "");
+      return `<div class="p">${pre}${fmt(m.prices[b])}${sv}<small>Envío e impuestos incluidos</small></div>
         <p class="cpick" data-mk="${l.id}-${m.key}">Color: <b>${c.n}</b></p>
         <button class="btn btn-sol btn-add" data-add="${id}" aria-pressed="${!!cart[id]}">${cart[id] ? `En tu pedido (${cart[id]})` : "Agregar al pedido"}</button>`;
     }, "buy"]
@@ -744,7 +757,7 @@ function openSheet(id, title){
   document.getElementById("sheetDesc").textContent = p.desc || "";
   const specs = [...(p.specs || []), ["Envío e impuestos a Argentina", "Incluidos"]];
   document.getElementById("sheetSpecs").innerHTML = specs.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join("");
-  document.getElementById("sheetPrice").innerHTML = `${p.list ? `<span class="was">${fmt(p.list)}</span>` : ""}${fmt(p.price)}${p.list ? " " + OFF : ""}<small>Precio final en dólares</small>`;
+  document.getElementById("sheetPrice").innerHTML = `${p.list ? `<span class="was">${fmt(p.list)}</span>` : ""}${fmt(p.price)}${p.list ? SAVE(p.list, p.price) : ""}<small>Precio final en dólares</small>`;
   const add = document.getElementById("sheetAdd");
   add.dataset.id = id; add.textContent = cart[id] ? `En tu pedido (${cart[id]})` : "Agregar al pedido";
   document.getElementById("sheet").showModal();
@@ -816,7 +829,7 @@ function change(id, d){ cart[id] = (cart[id] || 0) + d; if (cart[id] <= 0) delet
 function send(){
   const t = total();
   const lines = Object.entries(cart).map(([id, q]) => `• ${q} × ${label(id)} — ${fmt(ITEMS[id].price * q)}`);
-  const msg = ["¡Hola Lift Argentina! Quiero hacer este pedido:", "", ...lines, "", `Total: ${fmt(t)}`, `Seña 50 %: ${fmt(t / 2)}`, `Envío a: ${dest}`, ...(Object.keys(cart).some(id => ITEMS[id].list) ? ["", `Promo de pretemporada ${PROMO.pct} % OFF aplicada (válida hasta el ${PROMO.hasta}).`] : [])].join("\n");
+  const msg = ["¡Hola Lift Argentina! Quiero hacer este pedido:", "", ...lines, "", `Total: ${fmt(t)}`, `Seña 50 %: ${fmt(t / 2)}`, `Envío a: ${dest}`, ...(Object.keys(cart).some(id => ITEMS[id].list) ? ["", `Promo de pretemporada aplicada: ahorrás ${fmt(Object.entries(cart).reduce((a, [id, q]) => a + (ITEMS[id].list ? (ITEMS[id].list - ITEMS[id].price) * q : 0), 0))} (${PROMO.pct} % OFF, válida hasta el ${PROMO.hasta}).`] : [])].join("\n");
   window.open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`, "_blank", "noopener");
 }
 
@@ -852,7 +865,7 @@ document.addEventListener("change", e => {
 document.getElementById("sheet").addEventListener("click", e => { if (e.target.id === "sheet") e.target.close(); });
 
 if (PROMO_ON) document.querySelector(".hero-in").insertAdjacentHTML("beforeend",
-  `<a class="promo-hero" href="#comparar" data-goline="lift5f"><b>Promo de pretemporada · ${PROMO.pct} % OFF</b><span>En LIFT5 F y LIFT5 · hasta el ${PROMO.hasta}</span></a>`);
+  `<a class="promo-hero" href="#comparar" data-goline="lift5f"><b>Ahorrás hasta ${fmt(Math.max(...LINES.map(maxSave)))}</b><span>Promo de pretemporada · ${PROMO.pct} % OFF en LIFT5 F y LIFT5 · hasta el ${PROMO.hasta}</span></a>`);
 renderTabs(); renderLine(); renderParts();
 // en reposo, precarga la foto principal de cada modelo para que cambiar de línea sea instantáneo
 addEventListener("load", () => { if (navigator.connection && navigator.connection.saveData) return; (window.requestIdleCallback || (f => setTimeout(f, 1500)))(() => LINES.forEach(l => preloadLine(l, false))); });

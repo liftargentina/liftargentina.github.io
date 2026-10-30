@@ -595,7 +595,7 @@ const MIN = 5000;
 // --- PROMO DE PRETEMPORADA ---
 // Se desactiva sola cuando pasa "end": vuelven los precios normales y desaparecen los carteles.
 // "skip": modelos sin descuento (formato línea-modelo).
-const PROMO = {pct: 5, end: new Date("2026-11-17T00:00:00-03:00"), hasta: "16/11", lines: ["lift5f", "lift5"], skip: ["lift5-laird"]};
+const PROMO = {pct: 5, end: new Date("2026-11-16T00:00:00-03:00"), hasta: "15/11", lines: ["lift5f", "lift5"], skip: ["lift5-laird"]};
 const PROMO_ON = Date.now() < PROMO.end.getTime();
 if (PROMO_ON) LINES.forEach(l => {
   if (!PROMO.lines.includes(l.id)) return;

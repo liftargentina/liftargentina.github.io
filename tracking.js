@@ -2,7 +2,7 @@
    Para activar, completar los dos IDs. Si un ID queda vacío, esa herramienta no se carga.
    Si los dos están vacíos, este archivo no hace nada (ni muestra el aviso de cookies). */
 (function () {
-  var META_PIXEL_ID = "";   // ej: "123456789012345"  (Meta Business > Administrador de eventos)
+  var META_PIXEL_ID = "900093549759805";  (Meta Business > Administrador de eventos)
   var GA4_ID = "";          // ej: "G-XXXXXXXXXX"     (Google Analytics > Flujo de datos web)
 
   if (!META_PIXEL_ID && !GA4_ID) return;
